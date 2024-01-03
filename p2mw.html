@@ -1,35 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P2MW</title>
-    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-</head>
-<body>
+<html lang="en-US">
+  <head>
+      <title>P2MW DEMEI.ID</title>
 
-    <canvas id="pdf-viewer" style="border: 1px solid black;"></canvas>
+      <!-- Prevent viewport scaling on mobile devices.
+           See https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag -->
+      <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 
+      <style>
+        /* Force the body height to the size of the browser. */
+        html,
+        body {
+          height: 100%;
+        }
+
+        /* Size the viewer as desired. In this case, we fill the browser window. */
+        #viewer-container {
+          height: 100%;
+        }
+      </style>
+
+      <!-- Import the @accusoft/pdf-viewer bundle.js from an npm CDN mirror.
+           Adding this bundle.js makes window.Accusoft.PdfViewerControl available. -->
+      <script src="https://cdn.jsdelivr.net/npm/@accusoft/pdf-viewer@3/bundle.js"></script>
+  </head>
+  <body>
+    <!-- Define a container where the viewer will go. -->
+    <div id="viewer-container"></div>
     <script>
-        // Ganti dengan nama file PDF yang ingin ditampilkan
-        const pdfFile = 'p2mw.pdf';
+      // Create the viewer:
+      (async () => {
+        await window.Accusoft.PdfViewerControl.create({
+          sourceDocument: 'p2mw.pdf',
+          container: document.getElementById('viewer-container'),
 
-        // Muat dokumen PDF
-        pdfjsLib.getDocument(pdfFile).promise.then(pdfDoc => {
-            const canvas = document.getElementById('pdf-viewer');
-            const context = canvas.getContext('2d');
+          // Evaluation of all features:
+          licenseKey: 'eval',
+          allowedControls: {
+            // Enable or disable annotation tools (all false by default):
+            annotationList: true,
+            ellipseTool: true,
+            freehandDrawingTool: true,
+            freehandSignatureTool: true,
+            lineTool: true,
+            outline: true,
+            rectangleTool: true,
+            textHighlightTool: true,
 
-            // Muat halaman pertama dari dokumen PDF
-            pdfDoc.getPage(1).then(page => {
-                const viewport = page.getViewport({ scale: 1.5 });
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
-
-                // Render halaman PDF ke dalam elemen canvas
-                page.render({ canvasContext: context, viewport });
-            });
+            // Enable or disable other parts of the UI (all true by default):
+            fullScreenToggle: true,
+            nextAndPreviousPageButtons: true,
+            pageNumberAndCount: true,
+            printing: true,
+            search: true,
+            thumbnails: true,
+            zoomInAndOutButtons: true
+          }
         });
+      })();
     </script>
-
-</body>
+  </body>
 </html>
