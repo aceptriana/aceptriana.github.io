@@ -1,63 +1,10 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-      <title>P2MW DEMEI.ID</title>
-
-      <!-- Prevent viewport scaling on mobile devices.
-           See https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag -->
-      <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-
-      <style>
-        /* Force the body height to the size of the browser. */
-        html,
-        body {
-          height: 100%;
-        }
-
-        /* Size the viewer as desired. In this case, we fill the browser window. */
-        #viewer-container {
-          height: 100%;
-        }
-      </style>
-
-      <!-- Import the @accusoft/pdf-viewer bundle.js from an npm CDN mirror.
-           Adding this bundle.js makes window.Accusoft.PdfViewerControl available. -->
-      <script src="https://cdn.jsdelivr.net/npm/@accusoft/pdf-viewer@3/bundle.js"></script>
-  </head>
-  <body>
-    <!-- Define a container where the viewer will go. -->
-    <div id="viewer-container"></div>
-    <script>
-      // Create the viewer:
-      (async () => {
-        await window.Accusoft.PdfViewerControl.create({
-          sourceDocument: 'p2mw.pdf',
-          container: document.getElementById('viewer-container'),
-
-          // Evaluation of all features:
-          licenseKey: 'eval',
-          allowedControls: {
-            // Enable or disable annotation tools (all false by default):
-            annotationList: true,
-            ellipseTool: true,
-            freehandDrawingTool: true,
-            freehandSignatureTool: true,
-            lineTool: true,
-            outline: true,
-            rectangleTool: true,
-            textHighlightTool: true,
-
-            // Enable or disable other parts of the UI (all true by default):
-            fullScreenToggle: true,
-            nextAndPreviousPageButtons: true,
-            pageNumberAndCount: true,
-            printing: true,
-            search: true,
-            thumbnails: true,
-            zoomInAndOutButtons: true
-          }
-        });
-      })();
-    </script>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" style="width:100%; height:100%;">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Yongkin's Resume</title>
+</head>
+  <body style="width:100%; height:100%; margin:0;">
+    <iframe src="p2mw.pdf" style="width:100%; height:100%;" frameborder="0"></iframe>
   </body>
 </html>
