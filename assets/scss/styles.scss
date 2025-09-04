@@ -390,6 +390,9 @@ img{
         &__img{
             width: 200px;
         }
+        &__title{
+            font-size: 1.8rem; /* Sedikit mengurangi ukuran font judul di layar sangat kecil */
+        }
     }
 }
 
