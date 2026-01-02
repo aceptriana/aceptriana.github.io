@@ -70,6 +70,7 @@
                         <li class="nav__item"><a href="#education" class="nav__link">Pendidikan</a></li>
                         <li class="nav__item"><a href="#experience" class="nav__link">Pengalaman</a></li>
                         <li class="nav__item"><a href="#skills" class="nav__link">Keahlian</a></li>
+                        <li class="nav__item"><a href="#portfolio" class="nav__link">Portfolio</a></li>
                         <li class="nav__item"><a href="#certification" class="nav__link">Sertifikat</a></li>
                     </ul>
                 </div>
@@ -219,6 +220,105 @@
                         </p>
                     </div>
 
+                </div>
+            </section>
+
+            <!--===== PORTFOLIO =====-->
+            <section class="portfolio section" id="portfolio">
+                <h2 class="section-title">Portfolio</h2>
+
+                <div class="portfolio__container bd-grid">
+                    <!-- Project 1 -->
+                    <div class="portfolio__card">
+                        <div class="portfolio__img-container">
+                            <img src="assets/img/etrashbank.jpeg" alt="E-Trashbank Project" class="portfolio__img">
+                            <div class="portfolio__overlay">
+                                <div class="portfolio__links">
+                                    <a href="#" class="portfolio__link" title="Live Demo"><i class='bx bx-link-external'></i></a>
+                                    <a href="https://github.com/aceptriana" class="portfolio__link" title="Source Code"><i class='bx bxl-github'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portfolio__content">
+                            <span class="portfolio__category">Web Development</span>
+                            <h3 class="portfolio__title">E-Trashbank</h3>
+                            <p class="portfolio__description">Sistem pengelolaan sampah digital yang mengubah sampah menjadi tabungan rupiah. Dikembangkan dalam program PPK Ormawa HIMA SI UNIKU.</p>
+                            <div class="portfolio__tech">
+                                <span class="portfolio__tech-item">PHP</span>
+                                <span class="portfolio__tech-item">MySQL</span>
+                                <span class="portfolio__tech-item">Bootstrap</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="portfolio__card">
+                        <div class="portfolio__img-container">
+                            <img src="assets/img/coming.png" alt="Capstone Project" class="portfolio__img">
+                            <div class="portfolio__overlay">
+                                <div class="portfolio__links">
+                                    <a href="#" class="portfolio__link" title="Live Demo"><i class='bx bx-link-external'></i></a>
+                                    <a href="https://github.com/aceptriana" class="portfolio__link" title="Source Code"><i class='bx bxl-github'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portfolio__content">
+                            <span class="portfolio__category">System Administration</span>
+                            <h3 class="portfolio__title">Server Infrastructure</h3>
+                            <p class="portfolio__description">Implementasi dan manajemen infrastruktur server Linux dengan sertifikasi RHCSA. Meliputi konfigurasi, monitoring, dan maintenance.</p>
+                            <div class="portfolio__tech">
+                                <span class="portfolio__tech-item">Linux</span>
+                                <span class="portfolio__tech-item">RHEL</span>
+                                <span class="portfolio__tech-item">Ansible</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="portfolio__card">
+                        <div class="portfolio__img-container">
+                            <img src="assets/img/coming.png" alt="HIMASI Website" class="portfolio__img">
+                            <div class="portfolio__overlay">
+                                <div class="portfolio__links">
+                                    <a href="#" class="portfolio__link" title="Live Demo"><i class='bx bx-link-external'></i></a>
+                                    <a href="https://github.com/aceptriana" class="portfolio__link" title="Source Code"><i class='bx bxl-github'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portfolio__content">
+                            <span class="portfolio__category">Web Development</span>
+                            <h3 class="portfolio__title">Demei.id E-Commerce</h3>
+                            <p class="portfolio__description">Website e-commerce dengan optimasi SEO untuk produk kerajinan tangan. Dikembangkan dalam program P2MW.</p>
+                            <div class="portfolio__tech">
+                                <span class="portfolio__tech-item">CodeIgniter</span>
+                                <span class="portfolio__tech-item">MySQL</span>
+                                <span class="portfolio__tech-item">SEO</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="portfolio__card">
+                        <div class="portfolio__img-container">
+                            <img src="assets/img/coming.png" alt="Tiang Tani Project" class="portfolio__img">
+                            <div class="portfolio__overlay">
+                                <div class="portfolio__links">
+                                    <a href="#" class="portfolio__link" title="Live Demo"><i class='bx bx-link-external'></i></a>
+                                    <a href="https://github.com/aceptriana" class="portfolio__link" title="Source Code"><i class='bx bxl-github'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portfolio__content">
+                            <span class="portfolio__category">Web Development</span>
+                            <h3 class="portfolio__title">Tiang Tani</h3>
+                            <p class="portfolio__description">Sistem informasi pertanian untuk mendukung efisiensi dan produktivitas petani. Dikembangkan dalam program PMM di ITB Stikom Bali.</p>
+                            <div class="portfolio__tech">
+                                <span class="portfolio__tech-item">PHP</span>
+                                <span class="portfolio__tech-item">MySQL</span>
+                                <span class="portfolio__tech-item">JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -379,7 +479,7 @@
                 <a href="#" class="footer__icon"><i class='bx bxl-instagram' ></i></a>
                 <a href="#" class="footer__icon"><i class='bx bxl-github' ></i></a>
             </div>
-            <p class="footer__copy">&#169; 2024 Acep Triana. Hak cipta dilindungi.</p>
+            <p class="footer__copy">&#169; <span id="currentYear"></span> Acep Triana. Hak cipta dilindungi.</p>
         </footer>
 
 
@@ -413,6 +513,9 @@
             }
 
             setInterval(changeText, 1000);
+
+            // Auto update year
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
         </script>
     </body>
 </html>
