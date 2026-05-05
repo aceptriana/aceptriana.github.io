@@ -748,47 +748,75 @@
                 'av064uzt7.webp'
             ];
 
-            const techMarqueeContent = document.getElementById('tech-marquee-content');
-            
-            // Add all images
-            techImages.forEach(img => {
-                const imgElement = document.createElement('img');
-                imgElement.src = `assets/img/tech/${img}`;
-                imgElement.alt = img.replace(/[.-]/g, ' ');
-                imgElement.className = 'tech-logo';
-                techMarqueeContent.appendChild(imgElement);
-            });
-            
-            // Add duplicate set for seamless loop
-            techImages.forEach(img => {
-                const imgElement = document.createElement('img');
-                imgElement.src = `assets/img/tech/${img}`;
-                imgElement.alt = img.replace(/[.-]/g, ' ');
-                imgElement.className = 'tech-logo';
-                techMarqueeContent.appendChild(imgElement);
-            });
-
-            /*===== TEXT ANIMATION =====*/
-            const animatedText = document.getElementById('animated-text');
-            let textArray = JSON.parse(animatedText.getAttribute('data-id-list'));
-            let textIndex = 0;
-
-            function changeText() {
-                animatedText.classList.add('fade-out');
-                setTimeout(() => {
-                    textIndex = (textIndex + 1) % textArray.length;
-                    animatedText.textContent = textArray[textIndex];
-                    animatedText.classList.remove('fade-out');
-                }, 500);
+            function loadTechImages() {
+                const techMarqueeContent = document.getElementById('tech-marquee-content');
+                
+                if (!techMarqueeContent) return;
+                
+                // Add all images
+                techImages.forEach(img => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = './assets/img/tech/' + img;
+                    imgElement.alt = img.replace(/[.-]/g, ' ');
+                    imgElement.className = 'tech-logo';
+                    imgElement.loading = 'lazy';
+                    techMarqueeContent.appendChild(imgElement);
+                });
+                
+                // Add duplicate set for seamless loop
+                techImages.forEach(img => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = './assets/img/tech/' + img;
+                    imgElement.alt = img.replace(/[.-]/g, ' ');
+                    imgElement.className = 'tech-logo';
+                    imgElement.loading = 'lazy';
+                    techMarqueeContent.appendChild(imgElement);
+                });
             }
 
-            setInterval(changeText, 1000);
+            // Load images when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadTechImages);
+            } else {
+                loadTechImages();
+            }
+
+            /*===== TEXT ANIMATION =====*/
+            function initializeTextAnimation() {
+                const animatedText = document.getElementById('animated-text');
+                if (!animatedText) return;
+                
+                let textArray = JSON.parse(animatedText.getAttribute('data-id-list'));
+                let textIndex = 0;
+
+                function changeText() {
+                    animatedText.classList.add('fade-out');
+                    setTimeout(() => {
+                        textIndex = (textIndex + 1) % textArray.length;
+                        animatedText.textContent = textArray[textIndex];
+                        animatedText.classList.remove('fade-out');
+                    }, 500);
+                }
+
+                setInterval(changeText, 1000);
+            }
+
+            // Initialize text animation
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeTextAnimation);
+            } else {
+                initializeTextAnimation();
+            }
 
             // Auto update year
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            const yearElement = document.getElementById('currentYear');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
         </script>
     </body>
 </html>
+
 
 
 

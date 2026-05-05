@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Halaman tidak ditemukan - Acep Triana Portfolio">
+        <meta name="keywords" content="404, Not Found, Error">
+        
+        <link rel="stylesheet" href="assets/css/styles.css">
+
+        <!-- ===== FAVICON ===== -->
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+
+        <!-- ===== BOX ICONS ===== -->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        
+        <title>404 - Halaman Tidak Ditemukan | Acep Triana</title>
+        <style>
+            .error-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                padding: 2rem;
+                text-align: center;
+            }
+            
+            .error-code {
+                font-size: 8rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, var(--first-color), var(--second-color));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin: 0;
+                line-height: 1;
+            }
+            
+            .error-title {
+                font-size: 2rem;
+                margin: 1rem 0;
+                color: var(--second-color);
+            }
+            
+            .error-description {
+                font-size: 1rem;
+                color: var(--text-color);
+                max-width: 500px;
+                margin: 1rem 0 2rem 0;
+                line-height: 1.6;
+            }
+            
+            .error-btn {
+                display: inline-block;
+                padding: 0.75rem 2rem;
+                background: var(--first-color);
+                color: white;
+                text-decoration: none;
+                border-radius: 0.5rem;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                margin: 0.5rem;
+            }
+            
+            .error-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(66, 133, 244, 0.4);
+            }
+            
+            .error-icon {
+                font-size: 5rem;
+                color: var(--first-color);
+                margin-bottom: 1rem;
+            }
+        </style>
+    </head>
+    <body>
+        <!--===== HEADER =====-->
+        <header class="l-header">
+            <nav class="nav bd-grid">
+                <div>
+                    <a href="./" class="nav__logo">Acep Triana</a>
+                </div>
+
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="./" class="nav__link">Beranda</a></li>
+                        <li class="nav__item"><a href="./#about" class="nav__link">Tentang</a></li>
+                        <li class="nav__item"><a href="./#portfolio" class="nav__link">Portfolio</a></li>
+                        <li class="nav__item"><a href="./#certification" class="nav__link">Sertifikat</a></li>
+                    </ul>
+                    
+                    <div class="language-switcher language-switcher--mobile">
+                        <button class="language-btn active" data-lang="id">ID</button>
+                        <button class="language-btn" data-lang="en">EN</button>
+                    </div>
+                </div>
+
+                <div class="language-switcher">
+                    <button class="language-btn active" data-lang="id">ID</button>
+                    <button class="language-btn" data-lang="en">EN</button>
+                </div>
+
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </nav>
+        </header>
+
+        <div class="menu-overlay" id="menu-overlay"></div>
+
+        <main class="l-main">
+            <section class="error-container">
+                <i class='bx bx-error error-icon'></i>
+                <h1 class="error-code">404</h1>
+                <h2 class="error-title" data-en="Page Not Found" data-id="Halaman Tidak Ditemukan">Halaman Tidak Ditemukan</h2>
+                <p class="error-description" data-en="Sorry, the page you're looking for doesn't exist. It might have been moved or deleted." data-id="Maaf, halaman yang Anda cari tidak ada. Halaman tersebut mungkin telah dipindahkan atau dihapus.">Maaf, halaman yang Anda cari tidak ada. Halaman tersebut mungkin telah dipindahkan atau dihapus.</p>
+                
+                <div>
+                    <a href="./" class="error-btn" data-en="Back to Home" data-id="Kembali ke Beranda">Kembali ke Beranda</a>
+                    <a href="./#portfolio" class="error-btn" data-en="View Portfolio" data-id="Lihat Portfolio">Lihat Portfolio</a>
+                </div>
+            </section>
+        </main>
+
+        <!--===== FOOTER =====-->
+        <footer class="footer">
+            <p class="footer__title">Acep Triana</p>
+            <div class="footer__social">
+                <a href="#" class="footer__icon"><i class='bx bxl-facebook' ></i></a>
+                <a href="#" class="footer__icon"><i class='bx bxl-instagram' ></i></a>
+                <a href="#" class="footer__icon"><i class='bx bxl-github' ></i></a>
+            </div>
+            <p class="footer__copy" data-en="&#169; <span id='currentYear'></span> Acep Triana. All rights reserved." data-id="&#169; <span id='currentYear'></span> Acep Triana. Hak cipta dilindungi.">&#169; <span id="currentYear"></span> Acep Triana. Hak cipta dilindungi.</p>
+        </footer>
+
+        <!--===== 404 SCRIPT =====-->
+        <script>
+            // Language switcher for 404 page
+            let currentLanguage = localStorage.getItem('language') || 'id';
+            
+            function switchLanguage(lang) {
+                currentLanguage = lang;
+                localStorage.setItem('language', lang);
+                
+                // Update active button
+                document.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`[data-lang="${lang}"]`).classList.add('active');
+                
+                // Update all text with data attributes
+                document.querySelectorAll('[data-en][data-id]').forEach(element => {
+                    const text = lang === 'en' ? element.getAttribute('data-en') : element.getAttribute('data-id');
+                    if (text) {
+                        element.innerHTML = text;
+                    }
+                });
+            }
+            
+            // Set initial language
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    switchLanguage(e.target.getAttribute('data-lang'));
+                });
+                
+                if (btn.getAttribute('data-lang') === currentLanguage) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Hamburger menu toggle
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+            
+            if (navToggle) {
+                navToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('show');
+                    menuOverlay.classList.toggle('show');
+                });
+            }
+            
+            if (menuOverlay) {
+                menuOverlay.addEventListener('click', () => {
+                    navMenu.classList.remove('show');
+                    menuOverlay.classList.remove('show');
+                });
+            }
+            
+            // Auto update year
+            const yearElement = document.getElementById('currentYear');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+        </script>
+    </body>
+</html>
