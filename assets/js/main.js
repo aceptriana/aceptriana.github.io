@@ -1,12 +1,82 @@
+/*===== LANGUAGE SWITCHER =====*/
+let currentLanguage = localStorage.getItem('language') || 'id';
+
+function switchLanguage(lang) {
+    currentLanguage = lang;
+    localStorage.setItem('language', lang);
+    
+    // Update active button
+    document.querySelectorAll('.language-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`[data-lang="${lang}"]`).classList.add('active');
+    
+    // Update all text with data attributes
+    document.querySelectorAll('[data-en][data-id]').forEach(element => {
+        const text = lang === 'en' ? element.getAttribute('data-en') : element.getAttribute('data-id');
+        if (text) {
+            // Check if content has HTML tags
+            if (text.includes('<')) {
+                element.innerHTML = text;
+            } else {
+                element.textContent = text;
+            }
+        }
+    });
+    
+    // Update animated text
+    const animatedText = document.getElementById('animated-text');
+    if (animatedText && animatedText.hasAttribute('data-en-list') && animatedText.hasAttribute('data-id-list')) {
+        const enList = JSON.parse(animatedText.getAttribute('data-en-list'));
+        const idList = JSON.parse(animatedText.getAttribute('data-id-list'));
+        textArray = lang === 'en' ? enList : idList;
+        textIndex = 0;
+        animatedText.textContent = textArray[0];
+    }
+}
+
+// Language button listeners
+document.querySelectorAll('.language-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        switchLanguage(e.target.getAttribute('data-lang'));
+    });
+});
+
+// Initialize with saved language
+switchLanguage(currentLanguage);
+
 /*===== MENU SHOW =====*/ 
 const showMenu = (toggleId, navId) =>{
     const toggle = document.getElementById(toggleId),
-    nav = document.getElementById(navId)
+    nav = document.getElementById(navId),
+    overlay = document.getElementById('menu-overlay')
 
     if(toggle && nav){
-        toggle.addEventListener('click', ()=>{
+        toggle.addEventListener('click', (e)=>{
+            e.stopPropagation()
             nav.classList.toggle('show')
+            if(overlay) {
+                overlay.classList.toggle('active')
+            }
         })
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e)=>{
+            if(!nav.contains(e.target) && !toggle.contains(e.target)){
+                nav.classList.remove('show')
+                if(overlay) {
+                    overlay.classList.remove('active')
+                }
+            }
+        })
+        
+        // Close menu when clicking overlay
+        if(overlay) {
+            overlay.addEventListener('click', ()=>{
+                nav.classList.remove('show')
+                overlay.classList.remove('active')
+            })
+        }
     }
 }
 showMenu('nav-toggle','nav-menu')
@@ -16,8 +86,12 @@ const navLink = document.querySelectorAll('.nav__link')
 
 function linkAction(){
     const navMenu = document.getElementById('nav-menu')
+    const overlay = document.getElementById('menu-overlay')
     // When we click on each nav__link, we remove the show-menu class
     navMenu.classList.remove('show')
+    if(overlay) {
+        overlay.classList.remove('active')
+    }
 }
 navLink.forEach(n => n.addEventListener('click', linkAction))
 

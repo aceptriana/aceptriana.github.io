@@ -25,6 +25,14 @@
 
         <link rel="stylesheet" href="assets/css/styles.css">
 
+        <!-- ===== FAVICON ===== -->
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+        <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="assets/img/android-chrome-192x192.png">
+        <link rel="icon" type="image/png" sizes="512x512" href="assets/img/android-chrome-512x512.png">
+
         <!-- ===== BOX ICONS ===== -->
         <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
         <!-- Google tag (gtag.js) -->
@@ -81,14 +89,19 @@
 
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav__list">
-                        <li class="nav__item"><a href="#home" class="nav__link active">Beranda</a></li>
-                        <li class="nav__item"><a href="#about" class="nav__link">Tentang</a></li>
-                        <li class="nav__item"><a href="#education" class="nav__link">Pendidikan</a></li>
-                        <li class="nav__item"><a href="#experience" class="nav__link">Pengalaman</a></li>
-                        <li class="nav__item"><a href="#skills" class="nav__link">Keahlian</a></li>
-                        <li class="nav__item"><a href="#portfolio" class="nav__link">Portfolio</a></li>
-                        <li class="nav__item"><a href="#certification" class="nav__link">Sertifikat</a></li>
+                        <li class="nav__item"><a href="#home" class="nav__link active" data-en="Home" data-id="Beranda">Beranda</a></li>
+                        <li class="nav__item"><a href="#about" class="nav__link" data-en="About" data-id="Tentang">Tentang</a></li>
+                        <li class="nav__item"><a href="#education" class="nav__link" data-en="Education" data-id="Pendidikan">Pendidikan</a></li>
+                        <li class="nav__item"><a href="#experience" class="nav__link" data-en="Experience" data-id="Pengalaman">Pengalaman</a></li>
+                        <li class="nav__item"><a href="#skills" class="nav__link" data-en="Skills" data-id="Keahlian">Keahlian</a></li>
+                        <li class="nav__item"><a href="#portfolio" class="nav__link" data-en="Portfolio" data-id="Portfolio">Portfolio</a></li>
+                        <li class="nav__item"><a href="#certification" class="nav__link" data-en="Certificates" data-id="Sertifikat">Sertifikat</a></li>
                     </ul>
+                </div>
+
+                <div class="language-switcher">
+                    <button class="language-btn active" data-lang="id">ID</button>
+                    <button class="language-btn" data-lang="en">EN</button>
                 </div>
 
                 <div class="nav__toggle" id="nav-toggle">
@@ -97,13 +110,15 @@
             </nav>
         </header>
 
+        <div class="menu-overlay" id="menu-overlay"></div>
+
         <main class="l-main">
             <!--===== HOME =====-->
             <section class="home bd-grid" id="home">
                 <div class="home__data">
-                    <h1 class="home__title">Halo,<br>Saya <span class="home__title-color">Acep Triana</span><br><span id="animated-text">Information Systems</span></h1>
+                    <h1 class="home__title">Halo,<br>Saya <span class="home__title-color">Acep Triana</span><br><span id="animated-text" data-en-list='["Information Systems","IT Support","System Administrator","Network Operations","Web Developer","Cybersecurity","Computer Engineering"]' data-id-list='["Sistem Informasi","Dukungan IT","Administrator Sistem","Network Operations","Pengembang Web","Cybersecurity","Teknik Komputer"]'>Sistem Informasi</span></h1>
 
-                    <a href="mailto:aceptriana1337@gmail.com" class="button">Hubungi Saya</a>
+                    <a href="mailto:aceptriana1337@gmail.com" class="button" data-en="Contact Me" data-id="Hubungi Saya">Hubungi Saya</a>
                 </div>
 
                 <div class="home__social">
@@ -128,7 +143,7 @@
             <!--===== ABOUT =====-->
             <section class="about section " id="about">
 
-                <h2 class="section-title">Tentang Saya</h2>
+                <h2 class="section-title" data-en="About Me" data-id="Tentang Saya">Tentang Saya</h2>
 
                 <div class="about__container bd-grid">
                     <div class="about__img">
@@ -137,20 +152,19 @@
                     </div>
                     
                     <div>
-                        <h3 class="about__subtitle">Saya Acep Triana, S.Kom</h3>
-                        <p class="about__text"> Lulusan baru Sarjana Komputer dengan semangat tinggi dan fondasi teknis yang kuat di
-                            berbagai bidang teknologi informasi. Keahlian saya terbukti dengan kepemilikan sertifikasi industri seperti Red Hat
-                            Certified System Administrator (RHCSA) dan portofolio proyek yang relevan. Saya memiliki kompetensi
-                            dalam Administrasi Sistem, Pengembangan Web, Dukungan TI, dan Operasi Jaringan. Saya berkomitmen
-                            untuk mengaplikasikan ilmu serta keterampilan untuk memulai karir dan memberikan kontribusi positif
-                            bagi perusahaan.</p>           
+                        <h3 class="about__subtitle" data-en="I'm Acep Triana, S.Kom" data-id="Saya Acep Triana, S.Kom">Saya Acep Triana, S.Kom</h3>
+                        <p class="about__text" data-en="As a graduate of Computer Science from Kuningan University, I am a professional System Administrator and experienced Web Developer with high enthusiasm and strong technical foundation in various fields of information technology. My portfolio demonstrates deep expertise in System Administration, Web Development, Network Operations, and IT Support proven through various successful projects." data-id="Sebagai seorang lulusan Sarjana Komputer dari Universitas Kuningan, saya adalah seorang System Administrator profesional dan Web Developer berpengalaman dengan semangat tinggi dan fondasi teknis yang kuat di berbagai bidang teknologi informasi. Portofolio saya menunjukkan keahlian mendalam dalam System Administration, Web Development, Network Operations, dan IT Support yang telah terbukti melalui berbagai proyek sukses.">Sebagai seorang lulusan Sarjana Komputer dari Universitas Kuningan, saya adalah seorang System Administrator profesional dan Web Developer berpengalaman dengan semangat tinggi dan fondasi teknis yang kuat di berbagai bidang teknologi informasi. Portofolio saya menunjukkan keahlian mendalam dalam System Administration, Web Development, Network Operations, dan IT Support yang telah terbukti melalui berbagai proyek sukses.</p>
+                        
+                        <p class="about__text" data-en="My expertise as a System Administrator has been recognized with the Red Hat Certified System Administrator (RHCSA) certification, the highest industry standard for Linux server management and system administration. I have extensive experience designing, implementing, and maintaining complex IT infrastructure. As a Web Developer, I have developed various web applications using modern technologies such as PHP, Python, MySQL, and the latest frameworks." data-id="Keahlian saya sebagai System Administrator telah diakui dengan sertifikasi Red Hat Certified System Administrator (RHCSA), standar industri tertinggi untuk manajemen server Linux dan administrasi sistem. Saya memiliki pengalaman luas dalam merancang, mengimplementasikan, dan memelihara infrastruktur IT yang kompleks. Sebagai Web Developer, saya telah mengembangkan berbagai aplikasi web menggunakan teknologi modern seperti PHP, Python, MySQL, dan framework terkini.">Keahlian saya sebagai System Administrator telah diakui dengan sertifikasi Red Hat Certified System Administrator (RHCSA), standar industri tertinggi untuk manajemen server Linux dan administrasi sistem. Saya memiliki pengalaman luas dalam merancang, mengimplementasikan, dan memelihara infrastruktur IT yang kompleks. Sebagai Web Developer, saya telah mengembangkan berbagai aplikasi web menggunakan teknologi modern seperti PHP, Python, MySQL, dan framework terkini.</p>
+                        
+                        <p class="about__text" data-en="My core competencies include Linux & Windows System Administration, Full-Stack Web Development, Network Operations, Network Administration, and technical IT Support for users. I am committed to applying knowledge and skills in every project to make positive contributions and provide innovative solutions for your company." data-id="Kompetensi inti saya mencakup Administrasi Sistem Linux & Windows, Web Development Full-Stack, Network Operations, Network Administration, dan IT Support teknis untuk pengguna. Saya berkomitmen untuk mengaplikasikan ilmu dan keterampilan dalam setiap proyek untuk memberikan kontribusi positif dan solusi inovatif bagi perusahaan Anda.">Kompetensi inti saya mencakup Administrasi Sistem Linux & Windows, Web Development Full-Stack, Network Operations, Network Administration, dan IT Support teknis untuk pengguna. Saya berkomitmen untuk mengaplikasikan ilmu dan keterampilan dalam setiap proyek untuk memberikan kontribusi positif dan solusi inovatif bagi perusahaan Anda.</p>           
                     </div>                                   
                 </div>
             </section>
 
             <!--===== PENDIDIKAN =====-->
             <section class="education section" id="education">
-                <h2 class="section-title">Pendidikan</h2>
+                <h2 class="section-title" data-en="Education" data-id="Pendidikan">Pendidikan</h2>
 
                 <div class="about__container bd-grid">
                     <div class="education__item">
@@ -173,7 +187,7 @@
 
             <!--===== PENGALAMAN =====-->
             <section class="experience section" id="experience">
-                <h2 class="section-title">Pengalaman</h2>
+                <h2 class="section-title" data-en="Experience" data-id="Pengalaman">Pengalaman</h2>
 
                 <div class="about__container bd-grid">
                     <div style="text-align: left;">
@@ -205,31 +219,31 @@
 
             <section class="skills section" id="skills">
      
-                <h2 class="section-title">Keahlian</h2>
+                <h2 class="section-title" data-en="Skills" data-id="Keahlian">Keahlian</h2>
 
                 <div class="skills__container bd-grid">          
                     <div style="grid-column: 1 / -1;"> <!-- Make this div span all columns -->
-                        <h3 class="skills__subtitle">System Administration & NOC</h3>
+                        <h3 class="skills__subtitle" data-en="System Administration & NOC" data-id="System Administration & NOC">System Administration & NOC</h3>
                         <p class="skills__text">
                             Manajemen Server Linux (RHCSA Certified), Administrasi Sistem Windows.<br>
                             Monitoring Jaringan, Analisis Kinerja Sistem, Manajemen Insiden.
                         </p>
 
-                        <h3 class="skills__subtitle">Web Development</h3>
+                        <h3 class="skills__subtitle" data-en="Web Development" data-id="Web Development">Web Development</h3>
                         <p class="skills__text">
                             <b>Backend:</b> PHP (CodeIgniter 4), Python (Flask).<br>
                             <b>Frontend:</b> HTML, CSS, JavaScript.<br>
                             <b>Database:</b> MySQL, SQLite.
                         </p>
 
-                        <h3 class="skills__subtitle">Jaringan</h3>
+                        <h3 class="skills__subtitle" data-en="Networking" data-id="Jaringan">Jaringan</h3>
                         <p class="skills__text">
                             Administrasi Jaringan (Junior Network Administrator Certified).<br>
                             <b>Konfigurasi & Troubleshooting:</b> MikroTik, Cisco Packet Tracer.<br>
                             <b>Protokol:</b> TCP/IP, DNS, DHCP.
                         </p>
 
-                        <h3 class="skills__subtitle">IT Support</h3>
+                        <h3 class="skills__subtitle" data-en="IT Support" data-id="IT Support">IT Support</h3>
                         <p class="skills__text">
                             Troubleshooting Hardware & Software, Pemeliharaan Perangkat Keras.<br>
                             Dukungan Teknis untuk Pengguna.
@@ -241,7 +255,7 @@
 
             <!--===== PORTFOLIO =====-->
             <section class="portfolio section" id="portfolio">
-                <h2 class="section-title">Portfolio</h2>
+                <h2 class="section-title" data-en="Portfolio" data-id="Portfolio">Portfolio</h2>
 
                 <div class="portfolio__container bd-grid">
                     <!-- Project 1 -->
@@ -340,7 +354,7 @@
 
        <!--===== SERTIFIKASI & PROGRAM =====-->
 <section class="certification section" id="certification">
-    <h2 class="section-title">Sertifikasi & Program</h2>
+    <h2 class="section-title" data-en="Certifications & Programs" data-id="Sertifikasi & Program">Sertifikasi & Program</h2>
 
     <div class="work__container bd-grid">
 
@@ -495,7 +509,7 @@
                 <a href="#" class="footer__icon"><i class='bx bxl-instagram' ></i></a>
                 <a href="#" class="footer__icon"><i class='bx bxl-github' ></i></a>
             </div>
-            <p class="footer__copy">&#169; <span id="currentYear"></span> Acep Triana. Hak cipta dilindungi.</p>
+            <p class="footer__copy" data-en="&#169; <span id='currentYear'></span> Acep Triana. All rights reserved." data-id="&#169; <span id='currentYear'></span> Acep Triana. Hak cipta dilindungi.">&#169; <span id="currentYear"></span> Acep Triana. Hak cipta dilindungi.</p>
         </footer>
 
 
@@ -507,16 +521,7 @@
         <script>
             /*===== TEXT ANIMATION =====*/
             const animatedText = document.getElementById('animated-text');
-            const textArray = [
-            "Information Systems",
-"IT Support",
-"System Administrator",
-"Network Operations",
-"Web Developer",
-"Cybersecurity",
-"Computer Engineering"
-
-            ];
+            let textArray = JSON.parse(animatedText.getAttribute('data-id-list'));
             let textIndex = 0;
 
             function changeText() {
@@ -525,7 +530,7 @@
                     textIndex = (textIndex + 1) % textArray.length;
                     animatedText.textContent = textArray[textIndex];
                     animatedText.classList.remove('fade-out');
-                }, 500); // Should match the CSS transition time
+                }, 500);
             }
 
             setInterval(changeText, 1000);
