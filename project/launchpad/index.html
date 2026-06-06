@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starlight | Web3 Launchpad</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        base: {
+                            900: '#06090f', // Very dark blue/black
+                            800: '#0d131f', // Dark panel background
+                            700: '#161f30', // Lighter panel
+                            600: '#23304a', // Borders
+                        },
+                        neon: {
+                            cyan: '#00f0ff',
+                            blue: '#3b82f6',
+                            violet: '#8b5cf6',
+                            green: '#10b981'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #06090f; }
+        ::-webkit-scrollbar-thumb { background: #23304a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+        
+        body {
+            background-color: #06090f;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #f8fafc;
+        }
+
+        .glass-card {
+            background: rgba(13, 19, 31, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card:hover {
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 240, 255, 0.05);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #00f0ff 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #00f0ff 0%, #3b82f6 100%);
+            border-radius: inherit;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+        
+        .progress-stripes {
+            background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+            background-size: 1rem 1rem;
+            animation: moveStripes 1s linear infinite;
+        }
+        
+        @keyframes moveStripes {
+            from { background-position: 1rem 0; }
+            to { background-position: 0 0; }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Ambient background glow elements -->
+    <div class="fixed top-[20%] left-[10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[10%] right-[5%] w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-24 right-4 z-50 flex flex-col gap-3 w-80 max-w-[calc(100vw-2rem)]"></div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 bg-base-900/80 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer z-10" onclick="app.navigate('home')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neon-blue to-neon-violet flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                        <i data-lucide="rocket" class="text-white w-5 h-5"></i>
+                    </div>
+                    <span class="font-bold text-2xl tracking-tight hidden sm:block">STARLIGHT</span>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden md:flex items-center gap-8 font-medium text-gray-400 absolute left-1/2 -translate-x-1/2">
+                    <button onclick="app.navigate('home')" class="hover:text-white transition-colors relative" id="nav-home">
+                        Launchpad
+                    </button>
+                    <button onclick="app.navigate('dashboard')" class="hover:text-white transition-colors relative" id="nav-dashboard">
+                        Vesting Dashboard
+                    </button>
+                </div>
+
+                <!-- Right Side: Tier & Wallet -->
+                <div class="flex items-center gap-4 z-10">
+                    <div id="user-tier-container" class="hidden sm:block">
+                        <!-- Injected via JS -->
+                    </div>
+                    <div id="wallet-container">
+                        <!-- Injected via JS -->
+                    </div>
+                    <!-- Mobile Menu Toggle -->
+                    <button class="md:hidden text-gray-300 hover:text-white p-2" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-base-600 absolute w-full left-0">
+            <div class="px-4 py-4 space-y-2">
+                <button onclick="app.navigate('home'); document.getElementById('mobile-menu').classList.add('hidden')" class="block w-full text-left px-3 py-3 rounded-xl text-base font-medium text-white hover:bg-base-700">Launchpad</button>
+                <button onclick="app.navigate('dashboard'); document.getElementById('mobile-menu').classList.add('hidden')" class="block w-full text-left px-3 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-base-700">Vesting Dashboard</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="app-content" class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <!-- Views will be injected here by JS -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-base-700 bg-base-900 mt-auto relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="rocket" class="text-neon-cyan w-5 h-5"></i>
+                    <span class="font-bold text-lg">Starlight Protocol</span>
+                </div>
+                <p class="text-gray-500 text-sm">Decentralized IDO Platform © 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Wallet Connect Modal -->
+    <div id="wallet-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-base-800 border border-base-600 rounded-2xl w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] transform scale-95 transition-transform duration-300" id="wallet-modal-content">
+            <div class="flex justify-between items-center p-5 border-b border-base-700">
+                <h3 class="font-bold text-xl">Connect Wallet</h3>
+                <button onclick="app.closeWalletModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-5 space-y-3">
+                <button onclick="app.connectWallet('MetaMask')" class="w-full flex items-center gap-4 p-4 rounded-xl border border-base-600 hover:border-neon-blue bg-base-900 hover:bg-base-700 transition-all group">
+                    <div class="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="fox" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-semibold text-lg">MetaMask</span>
+                </button>
+                <button onclick="app.connectWallet('WalletConnect')" class="w-full flex items-center gap-4 p-4 rounded-xl border border-base-600 hover:border-neon-blue bg-base-900 hover:bg-base-700 transition-all group">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="scan-line" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-semibold text-lg">WalletConnect</span>
+                </button>
+                <button onclick="app.connectWallet('Phantom')" class="w-full flex items-center gap-4 p-4 rounded-xl border border-base-600 hover:border-neon-blue bg-base-900 hover:bg-base-700 transition-all group">
+                    <div class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="ghost" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-semibold text-lg text-gray-400">Phantom <span class="text-xs ml-2 text-gray-500">(Solana)</span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KYC Modal -->
+    <div id="kyc-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-base-800 border border-base-600 rounded-2xl w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 p-8 text-center" id="kyc-modal-content">
+            <div class="w-16 h-16 rounded-full bg-blue-500/20 text-neon-blue flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="shield-check" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-2xl mb-2">Identity Verification Required</h3>
+            <p class="text-gray-400 mb-6">To participate in token sales on Starlight, you must complete the KYC (Know Your Customer) process to comply with regulations.</p>
+            
+            <div class="space-y-3">
+                <button onclick="app.simulateKYC()" id="kyc-submit-btn" class="w-full btn-primary font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/20 text-white flex justify-center items-center gap-2">
+                    Start KYC Process
+                </button>
+                <button onclick="app.closeKYCModal()" class="w-full bg-transparent border border-base-600 hover:bg-base-700 font-medium py-3 px-4 rounded-xl text-gray-300 transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- MOCK DATA ---
+        const MOCK_PROJECTS = [
+            {
+                id: 'p1',
+                name: 'Nebula Network',
+                ticker: 'NBL',
+                status: 'active', // active, upcoming, ended
+                logo: 'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=200&auto=format&fit=crop',
+                cover: 'https://images.unsplash.com/photo-1638803040283-7a5ffa148b28?q=80&w=1200&auto=format&fit=crop',
+                description: 'A Layer-2 rollup solution focused on privacy-preserving smart contracts and cross-chain interoperability.',
+                totalRaise: '500,000 USDC',
+                currentRaise: 375000,
+                targetRaise: 500000,
+                price: '0.05 USDC',
+                participants: 1204,
+                endsIn: '2d 14h 30m',
+                tags: ['Layer 2', 'Privacy', 'ZK-Rollup'],
+                tokenomics: { public: 20, team: 15, ecosystem: 40, liquidity: 25 },
+                vestingTerms: '20% TGE, then linear over 6 months'
+            },
+            {
+                id: 'p2',
+                name: 'Aetheria Game',
+                ticker: 'AETH',
+                status: 'upcoming',
+                logo: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=200&auto=format&fit=crop',
+                cover: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop',
+                description: 'Next-generation MMORPG powered by Unreal Engine 5 with fully player-owned economies and on-chain assets.',
+                totalRaise: '1,200,000 USDT',
+                currentRaise: 0,
+                targetRaise: 1200000,
+                price: '0.12 USDT',
+                participants: 0,
+                startsIn: '5d 08h',
+                tags: ['GameFi', 'Metaverse', 'NFT'],
+                tokenomics: { public: 15, team: 20, rewards: 45, liquidity: 20 },
+                vestingTerms: '10% TGE, 3 months cliff, linear over 12 months'
+            },
+            {
+                id: 'p3',
+                name: 'DeFi OracleX',
+                ticker: 'DOX',
+                status: 'ended',
+                logo: 'https://images.unsplash.com/photo-1639762681485-074b7f4ec651?q=80&w=200&auto=format&fit=crop',
+                cover: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop',
+                description: 'Decentralized data feeds offering sub-second latency for high-frequency trading protocols.',
+                totalRaise: '300,000 USDC',
+                currentRaise: 300000,
+                targetRaise: 300000,
+                price: '0.02 USDC',
+                participants: 3402,
+                endedAt: '12 May 2026',
+                tags: ['DeFi', 'Oracle', 'Infrastructure'],
+                tokenomics: { public: 30, team: 10, ecosystem: 40, liquidity: 20 },
+                vestingTerms: '50% TGE, linear over 3 months'
+            }
+        ];
+
+        // Mock User Vesting Data
+        const MOCK_VESTING = [
+            {
+                id: 'v1',
+                project: 'DeFi OracleX',
+                ticker: 'DOX',
+                logo: 'https://images.unsplash.com/photo-1639762681485-074b7f4ec651?q=80&w=100&auto=format&fit=crop',
+                totalAllocation: 15000,
+                claimed: 7500,
+                availableToClaim: 2500,
+                nextUnlockDate: '15 Jun 2026',
+                status: 'active'
+            },
+            {
+                id: 'v2',
+                project: 'Solaris Yield',
+                ticker: 'SYL',
+                logo: 'https://images.unsplash.com/photo-1605792657660-596af9009e82?q=80&w=100&auto=format&fit=crop',
+                totalAllocation: 5000,
+                claimed: 5000,
+                availableToClaim: 0,
+                nextUnlockDate: '-',
+                status: 'completed'
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        const app = {
+            state: {
+                view: 'home', // 'home', 'project', 'dashboard'
+                activeProjectId: null,
+                wallet: {
+                    connected: false,
+                    address: null,
+                    balance: '0.00',
+                    tier: 'None',
+                    kycStatus: 'unverified' // 'unverified', 'pending', 'verified'
+                },
+                isTransacting: false
+            },
+
+            // State Updater
+            setState(newState) {
+                this.state = { ...this.state, ...newState };
+                this.render();
+            },
+
+            // Navigation
+            navigate(view, params = {}) {
+                if (view === 'project') {
+                    this.setState({ view, activeProjectId: params.id });
+                } else {
+                    this.setState({ view, activeProjectId: null });
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+
+            // Wallet Actions
+            openWalletModal() {
+                const modal = document.getElementById('wallet-modal');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    document.getElementById('wallet-modal-content').classList.remove('scale-95');
+                }, 10);
+            },
+
+            closeWalletModal() {
+                const modal = document.getElementById('wallet-modal');
+                modal.classList.add('opacity-0');
+                document.getElementById('wallet-modal-content').classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            },
+
+            connectWallet(type) {
+                this.closeWalletModal();
+                this.showToast('Requesting connection...', 'info');
+                
+                // Simulate async connection
+                setTimeout(() => {
+                    const mockAddress = '0x71...C3a9';
+                    this.setState({
+                        wallet: {
+                            connected: true,
+                            address: mockAddress,
+                            balance: '2,450.50 USDC',
+                            tier: 'Gold', // Mock tier based on staked tokens
+                            kycStatus: 'unverified' // Default to unverified
+                        }
+                    });
+                    this.showToast('Wallet Connected', 'success');
+                }, 800);
+            },
+
+            disconnectWallet() {
+                this.setState({ 
+                    wallet: { connected: false, address: null, balance: '0', tier: 'None', kycStatus: 'unverified' } 
+                });
+                this.showToast('Wallet Disconnected', 'info');
+                if(this.state.view === 'dashboard') this.navigate('home');
+            },
+
+            // KYC Actions
+            openKYCModal() {
+                const modal = document.getElementById('kyc-modal');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    document.getElementById('kyc-modal-content').classList.remove('scale-95');
+                }, 10);
+            },
+
+            closeKYCModal() {
+                const modal = document.getElementById('kyc-modal');
+                modal.classList.add('opacity-0');
+                document.getElementById('kyc-modal-content').classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            },
+
+            simulateKYC() {
+                const btn = document.getElementById('kyc-submit-btn');
+                btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing...';
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    this.setState({ wallet: { ...this.state.wallet, kycStatus: 'verified' } });
+                    this.closeKYCModal();
+                    this.showToast('Identity Verification Successful!', 'success');
+                }, 2000);
+            },
+
+            // Transactions
+            participateIDO(projectId, amount) {
+                if (!this.state.wallet.connected) {
+                    this.openWalletModal(); return;
+                }
+                if (this.state.wallet.kycStatus !== 'verified') {
+                    this.openKYCModal(); return;
+                }
+                
+                const val = parseFloat(amount);
+                if (isNaN(val) || val <= 0) {
+                    this.showToast('Enter a valid amount', 'error'); return;
+                }
+
+                this.setState({ isTransacting: true });
+                this.showToast('Awaiting contract approval...', 'info');
+
+                setTimeout(() => {
+                    this.setState({ isTransacting: false });
+                    this.showToast(`Successfully invested ${val} USDC!`, 'success');
+                    
+                    // Update mock data progress locally
+                    const project = MOCK_PROJECTS.find(p => p.id === projectId);
+                    if(project) {
+                        project.currentRaise += val;
+                        project.participants += 1;
+                        this.render(); // Re-render to show updated progress bar
+                    }
+                }, 2000);
+            },
+
+            claimTokens(vestingId) {
+                this.setState({ isTransacting: true });
+                
+                setTimeout(() => {
+                    const v = MOCK_VESTING.find(x => x.id === vestingId);
+                    if(v) {
+                        v.claimed += v.availableToClaim;
+                        v.availableToClaim = 0;
+                    }
+                    this.setState({ isTransacting: false });
+                    this.showToast('Tokens claimed successfully!', 'success');
+                }, 1500);
+            },
+
+            // UI Helpers
+            showToast(message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                
+                let colors = 'bg-base-800 border-base-600 text-white';
+                let icon = 'info';
+                if (type === 'success') { colors = 'bg-green-900/40 border-green-500/50 text-green-100'; icon = 'check-circle-2'; }
+                if (type === 'error') { colors = 'bg-red-900/40 border-red-500/50 text-red-100'; icon = 'alert-octagon'; }
+
+                toast.className = `flex items-center gap-3 p-4 rounded-xl border glass-card transform transition-all duration-300 translate-x-full opacity-0 ${colors}`;
+                toast.innerHTML = `
+                    <i data-lucide="${icon}" class="w-5 h-5 flex-shrink-0"></i>
+                    <p class="font-medium text-sm">${message}</p>
+                `;
+
+                container.appendChild(toast);
+                lucide.createIcons({ root: toast });
+
+                setTimeout(() => toast.classList.remove('translate-x-full', 'opacity-0'), 10);
+                setTimeout(() => {
+                    toast.classList.add('translate-x-full', 'opacity-0');
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            },
+
+            // --- RENDERERS ---
+            renderHeader() {
+                // Update nav indicators
+                ['home', 'dashboard'].forEach(nav => {
+                    const el = document.getElementById(`nav-${nav}`);
+                    if(el) {
+                        if (this.state.view === nav) {
+                            el.classList.add('text-neon-cyan', 'font-semibold');
+                            el.classList.remove('text-gray-400');
+                            // Add bottom glow line
+                            if(!el.querySelector('.nav-indicator')) {
+                                el.innerHTML += `<div class="nav-indicator absolute -bottom-7 left-0 right-0 h-1 bg-neon-cyan shadow-[0_0_10px_#00f0ff] rounded-t-full"></div>`;
+                            }
+                        } else {
+                            el.classList.remove('text-neon-cyan', 'font-semibold');
+                            el.classList.add('text-gray-400');
+                            const ind = el.querySelector('.nav-indicator');
+                            if(ind) ind.remove();
+                        }
+                    }
+                });
+
+                const walletContainer = document.getElementById('wallet-container');
+                const tierContainer = document.getElementById('user-tier-container');
+
+                if (this.state.wallet.connected) {
+                    // KYC Badge
+                    let kycHtml = '';
+                    if (this.state.wallet.kycStatus === 'verified') {
+                        kycHtml = `<div class="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-semibold mr-2">
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> KYC'd
+                        </div>`;
+                    } else {
+                        kycHtml = `<button onclick="app.openKYCModal()" class="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 hover:bg-orange-500/20 text-xs font-semibold mr-2 transition-colors">
+                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> KYC Required
+                        </button>`;
+                    }
+
+                    tierContainer.innerHTML = `
+                        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-base-800 border border-base-600 shadow-inner">
+                            <i data-lucide="award" class="w-4 h-4 text-yellow-400"></i>
+                            <span class="text-sm font-semibold text-gray-200">Tier: <span class="text-white">${this.state.wallet.tier}</span></span>
+                        </div>
+                    `;
+
+                    walletContainer.innerHTML = `
+                        <div class="flex items-center">
+                            ${kycHtml}
+                            <div class="relative group cursor-pointer">
+                                <div class="flex items-center gap-3 bg-base-800 hover:bg-base-700 border border-base-600 rounded-full py-1.5 pl-4 pr-1.5 transition-colors">
+                                    <div class="flex flex-col items-end mr-1 hidden sm:flex">
+                                        <span class="text-xs font-bold text-gray-300 font-mono">${this.state.wallet.balance}</span>
+                                    </div>
+                                    <div class="bg-gradient-to-r from-neon-blue to-neon-violet text-white text-sm font-bold px-3 py-1.5 rounded-full flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                                        ${this.state.wallet.address}
+                                    </div>
+                                </div>
+                                <div class="absolute right-0 mt-2 w-48 bg-base-800 border border-base-600 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                    <button onclick="app.disconnectWallet()" class="w-full text-left px-4 py-3 text-red-400 hover:bg-base-700 rounded-xl flex items-center gap-2 transition-colors">
+                                        <i data-lucide="log-out" class="w-4 h-4"></i> Disconnect
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    tierContainer.innerHTML = '';
+                    walletContainer.innerHTML = `
+                        <button onclick="app.openWalletModal()" class="btn-primary px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition-all flex items-center gap-2 font-semibold">
+                            <i data-lucide="wallet" class="w-4 h-4"></i> Connect Wallet
+                        </button>
+                    `;
+                }
+            },
+
+            renderHome() {
+                const renderProjectCard = (project) => {
+                    const progressPercent = Math.min((project.currentRaise / project.targetRaise) * 100, 100).toFixed(1);
+                    
+                    let statusBadge = '';
+                    if (project.status === 'active') {
+                        statusBadge = `<div class="absolute top-4 right-4 bg-green-500/20 border border-green-500/50 text-green-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 backdrop-blur-md"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Live Now</div>`;
+                    } else if (project.status === 'upcoming') {
+                        statusBadge = `<div class="absolute top-4 right-4 bg-blue-500/20 border border-blue-500/50 text-blue-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md">Upcoming</div>`;
+                    } else {
+                        statusBadge = `<div class="absolute top-4 right-4 bg-gray-500/20 border border-gray-500/50 text-gray-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md">Ended</div>`;
+                    }
+
+                    return `
+                    <div class="glass-card rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 flex flex-col h-full cursor-pointer" onclick="app.navigate('project', {id: '${project.id}'})">
+                        <!-- Header Image -->
+                        <div class="h-32 relative overflow-hidden bg-base-800">
+                            <div class="absolute inset-0 bg-gradient-to-t from-base-900 to-transparent z-10"></div>
+                            <img src="${project.cover}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-60">
+                            ${statusBadge}
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="p-6 relative z-20 flex-grow flex flex-col">
+                            <!-- Logo & Title -->
+                            <div class="flex items-end gap-4 -mt-12 mb-4">
+                                <img src="${project.logo}" class="w-16 h-16 rounded-2xl border-4 border-base-900 bg-base-800 object-cover">
+                                <div class="pb-1">
+                                    <h3 class="font-bold text-xl leading-tight group-hover:text-neon-cyan transition-colors">${project.name}</h3>
+                                    <span class="text-sm font-mono text-gray-400">${project.ticker}</span>
+                                </div>
+                            </div>
+
+                            <p class="text-gray-400 text-sm mb-6 line-clamp-2">${project.description}</p>
+                            
+                            <!-- Tags -->
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                ${project.tags.map(t => `<span class="px-2 py-1 bg-base-700 rounded-md text-xs font-medium text-gray-300">${t}</span>`).join('')}
+                            </div>
+
+                            <!-- Progress & Stats -->
+                            <div class="mt-auto space-y-4">
+                                ${project.status !== 'upcoming' ? `
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1.5">
+                                        <span class="text-gray-400">Progress</span>
+                                        <span class="font-mono font-bold text-neon-cyan">${progressPercent}%</span>
+                                    </div>
+                                    <div class="w-full bg-base-700 rounded-full h-2.5 overflow-hidden">
+                                        <div class="${project.status === 'active' ? 'bg-gradient-to-r from-neon-blue to-neon-cyan progress-stripes' : 'bg-base-500'} h-full rounded-full" style="width: ${progressPercent}%"></div>
+                                    </div>
+                                    <div class="flex justify-between text-xs mt-1.5 font-mono text-gray-500">
+                                        <span>${project.currentRaise.toLocaleString()} USDC</span>
+                                        <span>${project.targetRaise.toLocaleString()} USDC</span>
+                                    </div>
+                                </div>` : `
+                                <div class="bg-base-800 rounded-xl p-3 border border-base-700 text-center">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Sale Starts In</p>
+                                    <p class="text-lg font-mono font-bold text-white">${project.startsIn}</p>
+                                </div>
+                                `}
+
+                                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-base-700/50">
+                                    <div>
+                                        <p class="text-xs text-gray-500 mb-0.5">Token Price</p>
+                                        <p class="font-mono font-medium text-white">${project.price}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs text-gray-500 mb-0.5">${project.status === 'upcoming' ? 'Target Raise' : 'Participants'}</p>
+                                        <p class="font-mono font-medium text-white">${project.status === 'upcoming' ? project.totalRaise : project.participants}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                };
+
+                return `
+                    <!-- Hero Section -->
+                    <div class="relative py-16 md:py-24 mb-10 overflow-hidden rounded-3xl border border-white/5 bg-base-800/30">
+                        <div class="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-neon-blue/10 to-transparent pointer-events-none"></div>
+                        <div class="relative z-10 max-w-2xl px-8 md:px-12">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-neon-blue text-sm font-semibold mb-6">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i> The Future of Web3 Fundraising
+                            </div>
+                            <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+                                Launch <br />
+                                <span class="text-gradient">Next-Gen</span> Projects
+                            </h1>
+                            <p class="text-gray-400 text-lg mb-8 max-w-lg">
+                                Starlight is a decentralized IDO platform providing secure, transparent, and fair early-stage access to top-tier crypto protocols.
+                            </p>
+                            <div class="flex gap-4">
+                                <button class="btn-primary px-8 py-3.5 rounded-xl font-bold shadow-[0_0_20px_rgba(59,130,246,0.4)]">Apply for IDO</button>
+                                <button class="bg-base-700 hover:bg-base-600 px-8 py-3.5 rounded-xl font-bold transition-colors">Learn Tiers</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating Hero Stats -->
+                        <div class="hidden lg:flex absolute right-12 top-1/2 -translate-y-1/2 gap-6 animate-float">
+                            <div class="glass-card p-6 rounded-2xl w-48">
+                                <p class="text-gray-400 text-sm mb-1">Total Raised</p>
+                                <p class="text-3xl font-bold text-white font-mono">$42.5M</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl w-48 mt-12">
+                                <p class="text-gray-400 text-sm mb-1">Projects Funded</p>
+                                <p class="text-3xl font-bold text-white font-mono">128</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projects Grid -->
+                    <div>
+                        <div class="flex items-center justify-between mb-8">
+                            <h2 class="text-3xl font-bold flex items-center gap-3">
+                                <i data-lucide="compass" class="text-neon-cyan w-8 h-8"></i> 
+                                Explore Projects
+                            </h2>
+                            <!-- Filter mock -->
+                            <div class="hidden sm:flex bg-base-800 rounded-lg p-1 border border-base-700">
+                                <button class="px-4 py-1.5 rounded-md bg-base-700 shadow text-sm font-medium">All</button>
+                                <button class="px-4 py-1.5 rounded-md text-gray-400 hover:text-white text-sm font-medium">Active</button>
+                                <button class="px-4 py-1.5 rounded-md text-gray-400 hover:text-white text-sm font-medium">Upcoming</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${MOCK_PROJECTS.map(renderProjectCard).join('')}
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderProject() {
+                const project = MOCK_PROJECTS.find(p => p.id === this.state.activeProjectId);
+                if (!project) return `<div class="text-center py-20">Project not found</div>`;
+
+                const progressPercent = Math.min((project.currentRaise / project.targetRaise) * 100, 100).toFixed(1);
+                const isBtnLoading = this.state.isTransacting;
+
+                // Participation Box Logic
+                let actionArea = '';
+                if (project.status === 'active') {
+                    if (!this.state.wallet.connected) {
+                        actionArea = `<button onclick="app.openWalletModal()" class="w-full btn-primary font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i data-lucide="wallet" class="w-5 h-5"></i> Connect to Participate</button>`;
+                    } else if (this.state.wallet.kycStatus !== 'verified') {
+                        actionArea = `<button onclick="app.openKYCModal()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 transition-colors shadow-lg shadow-orange-500/20"><i data-lucide="shield-alert" class="w-5 h-5"></i> Verify KYC to Participate</button>`;
+                    } else {
+                        actionArea = `
+                            <div class="space-y-4">
+                                <div class="bg-base-900 border border-base-600 rounded-xl p-1 flex">
+                                    <input type="number" id="invest-amount" placeholder="Amount in USDC" class="bg-transparent border-none w-full px-4 outline-none font-mono text-lg text-white">
+                                    <button class="bg-base-700 px-4 py-2 rounded-lg text-xs font-bold mr-1 hover:bg-base-600">MAX</button>
+                                </div>
+                                <button onclick="app.participateIDO('${project.id}', document.getElementById('invest-amount').value)" 
+                                        ${isBtnLoading ? 'disabled' : ''}
+                                        class="w-full btn-primary font-bold py-4 rounded-xl flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                                    ${isBtnLoading ? '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing Transaction...' : '<i data-lucide="zap" class="w-5 h-5"></i> Approve & Buy'}
+                                </button>
+                                <p class="text-center text-xs text-gray-500">Your Allocation: Max 1,000 USDC (${this.state.wallet.tier} Tier)</p>
+                            </div>
+                        `;
+                    }
+                } else if (project.status === 'upcoming') {
+                    actionArea = `<button disabled class="w-full bg-base-700 text-gray-400 font-bold py-4 rounded-xl cursor-not-allowed">Sale Not Started</button>`;
+                } else {
+                    actionArea = `<button disabled class="w-full bg-base-700 text-gray-400 font-bold py-4 rounded-xl cursor-not-allowed">Sale Ended</button>`;
+                }
+
+                // Render Tokenomics Bars (Simulating chart)
+                const colors = ['bg-neon-blue', 'bg-neon-violet', 'bg-neon-cyan', 'bg-green-400'];
+                const tokenomicsKeys = Object.keys(project.tokenomics);
+                
+                let tokenomicsHtml = `<div class="flex h-4 rounded-full overflow-hidden w-full mb-4">`;
+                tokenomicsKeys.forEach((key, i) => {
+                    tokenomicsHtml += `<div class="${colors[i]}" style="width: ${project.tokenomics[key]}%"></div>`;
+                });
+                tokenomicsHtml += `</div><div class="grid grid-cols-2 gap-3 text-sm">`;
+                tokenomicsKeys.forEach((key, i) => {
+                    tokenomicsHtml += `
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full ${colors[i]}"></span>
+                            <span class="capitalize text-gray-300">${key}</span>
+                            <span class="font-mono font-bold ml-auto">${project.tokenomics[key]}%</span>
+                        </div>
+                    `;
+                });
+                tokenomicsHtml += `</div>`;
+
+
+                return `
+                    <button onclick="app.navigate('home')" class="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors group w-max">
+                        <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i> Back to Launchpad
+                    </button>
+
+                    <!-- Cover Banner -->
+                    <div class="w-full h-48 md:h-64 rounded-3xl overflow-hidden relative mb-8 border border-white/10 shadow-2xl">
+                        <img src="${project.cover}" class="w-full h-full object-cover opacity-50">
+                        <div class="absolute inset-0 bg-gradient-to-t from-base-900 via-base-900/60 to-transparent"></div>
+                        
+                        <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 flex items-end gap-6">
+                            <img src="${project.logo}" class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-4 border-base-800 shadow-xl object-cover bg-base-900">
+                            <div class="pb-2">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <h1 class="text-3xl md:text-5xl font-extrabold text-white">${project.name}</h1>
+                                    <span class="px-2 py-1 bg-base-700 rounded-md text-sm font-mono font-bold text-gray-300">${project.ticker}</span>
+                                </div>
+                                <div class="flex gap-2 mt-3">
+                                    ${project.tags.map(t => `<span class="px-3 py-1 bg-base-800/80 backdrop-blur border border-white/10 rounded-full text-xs font-medium text-neon-cyan">${t}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Left Column: Info -->
+                        <div class="lg:col-span-2 space-y-8">
+                            <!-- About -->
+                            <div class="glass-card rounded-2xl p-6 md:p-8">
+                                <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="info" class="text-neon-cyan w-5 h-5"></i> About Project</h3>
+                                <p class="text-gray-300 leading-relaxed text-lg">${project.description}</p>
+                            </div>
+
+                            <!-- Tokenomics -->
+                            <div class="glass-card rounded-2xl p-6 md:p-8">
+                                <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="pie-chart" class="text-neon-violet w-5 h-5"></i> Tokenomics</h3>
+                                ${tokenomicsHtml}
+                                
+                                <div class="mt-8 p-4 bg-base-900/50 rounded-xl border border-base-700">
+                                    <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wide mb-2">Vesting Schedule</h4>
+                                    <p class="font-medium">${project.vestingTerms}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Participate Widget -->
+                        <div>
+                            <div class="glass-card rounded-2xl p-6 md:p-8 sticky top-28 border-t-4 ${project.status === 'active' ? 'border-t-neon-cyan' : 'border-t-base-600'}">
+                                <div class="flex justify-between items-center mb-6">
+                                    <span class="text-gray-400 font-medium">Status</span>
+                                    ${project.status === 'active' 
+                                        ? '<span class="flex items-center gap-2 text-green-400 font-bold bg-green-500/10 px-3 py-1 rounded-full"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> LIVE</span>'
+                                        : `<span class="uppercase font-bold text-gray-400">${project.status}</span>`}
+                                </div>
+
+                                <!-- Progress Area -->
+                                <div class="mb-8">
+                                    <div class="flex justify-between items-end mb-2">
+                                        <span class="text-gray-400 text-sm">Total Raised</span>
+                                        <span class="text-2xl font-mono font-bold text-white">${project.currentRaise.toLocaleString()} <span class="text-sm text-gray-500">/ ${project.targetRaise.toLocaleString()} USDC</span></span>
+                                    </div>
+                                    <div class="w-full bg-base-800 rounded-full h-3 mb-2 border border-base-700">
+                                        <div class="h-full rounded-full ${project.status === 'active' ? 'bg-gradient-to-r from-neon-blue to-neon-cyan progress-stripes' : 'bg-base-500'}" style="width: ${progressPercent}%"></div>
+                                    </div>
+                                    <div class="text-right text-xs font-mono text-neon-cyan">${progressPercent}%</div>
+                                </div>
+
+                                <!-- Sale Info -->
+                                <div class="space-y-3 mb-8">
+                                    <div class="flex justify-between py-2 border-b border-base-700/50">
+                                        <span class="text-gray-400 text-sm">Token Price</span>
+                                        <span class="font-mono font-medium">${project.price}</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-base-700/50">
+                                        <span class="text-gray-400 text-sm">Network</span>
+                                        <span class="font-medium flex items-center gap-1"><i data-lucide="hexagon" class="w-4 h-4 text-blue-400"></i> Arbitrum</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-base-700/50">
+                                        <span class="text-gray-400 text-sm">${project.status === 'upcoming' ? 'Starts In' : 'Ends In'}</span>
+                                        <span class="font-mono font-medium text-neon-violet">${project.status === 'ended' ? 'Ended' : (project.endsIn || project.startsIn)}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Action -->
+                                ${actionArea}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderDashboard() {
+                if (!this.state.wallet.connected) {
+                    return `
+                        <div class="flex flex-col items-center justify-center py-32 text-center h-[60vh]">
+                            <div class="w-20 h-20 bg-base-800 rounded-full flex items-center justify-center mb-6 shadow-xl border border-base-700">
+                                <i data-lucide="lock" class="w-8 h-8 text-gray-500"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold mb-4">Connect Wallet Required</h2>
+                            <p class="text-gray-400 max-w-md mb-8">Please connect your wallet to view your IDO allocations and manage your vesting schedules.</p>
+                            <button onclick="app.openWalletModal()" class="btn-primary px-8 py-3 rounded-xl font-bold flex items-center gap-2">
+                                <i data-lucide="wallet" class="w-5 h-5"></i> Connect Now
+                            </button>
+                        </div>
+                    `;
+                }
+
+                const renderVestingRow = (v) => {
+                    const isClaimable = v.availableToClaim > 0;
+                    const isBtnLoading = this.state.isTransacting;
+                    const percentClaimed = ((v.claimed / v.totalAllocation) * 100).toFixed(0);
+
+                    return `
+                        <tr class="border-b border-base-700/50 hover:bg-base-800/30 transition-colors">
+                            <td class="py-4 px-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="${v.logo}" class="w-10 h-10 rounded-full border border-base-600">
+                                    <div>
+                                        <p class="font-bold text-white">${v.project}</p>
+                                        <p class="text-xs text-gray-500 font-mono">${v.ticker}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4 font-mono">
+                                <div class="font-medium">${v.totalAllocation.toLocaleString()}</div>
+                                <div class="w-24 bg-base-800 rounded-full h-1.5 mt-2">
+                                    <div class="bg-neon-cyan h-1.5 rounded-full" style="width: ${percentClaimed}%"></div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4 font-mono text-gray-400">${v.claimed.toLocaleString()}</td>
+                            <td class="py-4 px-4 font-mono text-green-400 font-semibold">${v.availableToClaim.toLocaleString()}</td>
+                            <td class="py-4 px-4 text-gray-400 text-sm">${v.nextUnlockDate}</td>
+                            <td class="py-4 px-4 text-right">
+                                ${isClaimable 
+                                    ? `<button onclick="app.claimTokens('${v.id}')" ${isBtnLoading ? 'disabled' : ''} class="btn-primary text-sm font-bold py-2 px-4 rounded-lg shadow-lg disabled:opacity-50">
+                                        ${isBtnLoading ? 'Claiming...' : 'Claim'}
+                                       </button>`
+                                    : `<button disabled class="bg-base-800 text-gray-500 text-sm font-bold py-2 px-4 rounded-lg cursor-not-allowed border border-base-700">
+                                        ${v.status === 'completed' ? 'Completed' : 'Locked'}
+                                       </button>`
+                                }
+                            </td>
+                        </tr>
+                    `;
+                };
+
+                return `
+                    <div class="mb-10">
+                        <h1 class="text-4xl font-extrabold mb-2">Vesting Dashboard</h1>
+                        <p class="text-gray-400">Manage your IDO allocations and claim unlocked tokens.</p>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div class="glass-card rounded-2xl p-6 border-l-4 border-l-neon-blue">
+                            <div class="flex items-center gap-3 text-gray-400 mb-2">
+                                <i data-lucide="layers" class="w-5 h-5"></i> Projects Participated
+                            </div>
+                            <div class="text-3xl font-bold font-mono text-white">2</div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 border-l-4 border-l-neon-violet">
+                            <div class="flex items-center gap-3 text-gray-400 mb-2">
+                                <i data-lucide="coins" class="w-5 h-5"></i> Total Value Locked
+                            </div>
+                            <div class="text-3xl font-bold font-mono text-white">$1,450.00</div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 border-l-4 border-l-neon-cyan">
+                            <div class="flex items-center gap-3 text-gray-400 mb-2">
+                                <i data-lucide="unlock" class="w-5 h-5"></i> Available to Claim
+                            </div>
+                            <div class="text-3xl font-bold font-mono text-green-400">2,500 DOX</div>
+                        </div>
+                    </div>
+
+                    <!-- Vesting Table -->
+                    <div class="glass-card rounded-2xl overflow-hidden border border-base-600">
+                        <div class="p-5 border-b border-base-700 bg-base-800/50">
+                            <h3 class="font-bold flex items-center gap-2 text-lg">
+                                <i data-lucide="calendar-clock" class="text-neon-cyan w-5 h-5"></i> 
+                                Allocation Schedules
+                            </h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left whitespace-nowrap">
+                                <thead class="bg-base-900/80 text-gray-400 text-xs uppercase tracking-wider border-b border-base-700">
+                                    <tr>
+                                        <th class="py-4 px-4 font-semibold">Project</th>
+                                        <th class="py-4 px-4 font-semibold">Total Allocation</th>
+                                        <th class="py-4 px-4 font-semibold">Claimed</th>
+                                        <th class="py-4 px-4 font-semibold text-green-400">Available</th>
+                                        <th class="py-4 px-4 font-semibold">Next Unlock</th>
+                                        <th class="py-4 px-4 font-semibold text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${MOCK_VESTING.map(renderVestingRow).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            },
+
+            // Main Render Controller
+            render() {
+                const contentArea = document.getElementById('app-content');
+                
+                this.renderHeader();
+
+                // Apply simple fade effect for view transitions
+                contentArea.style.opacity = '0';
+                
+                setTimeout(() => {
+                    switch (this.state.view) {
+                        case 'home':
+                            contentArea.innerHTML = this.renderHome();
+                            break;
+                        case 'project':
+                            contentArea.innerHTML = this.renderProject();
+                            break;
+                        case 'dashboard':
+                            contentArea.innerHTML = this.renderDashboard();
+                            break;
+                        default:
+                            contentArea.innerHTML = this.renderHome();
+                    }
+                    lucide.createIcons();
+                    contentArea.style.transition = 'opacity 0.3s ease-in-out';
+                    contentArea.style.opacity = '1';
+                }, 150); // slight delay for transition
+            },
+
+            init() {
+                this.render();
+            }
+        };
+
+        // Initialize App when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+
+    </script>
+</body>
+</html>

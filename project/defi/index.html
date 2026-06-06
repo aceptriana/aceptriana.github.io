@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcepFi - Web3 DeFi App</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        dark: '#0f172a',
+                        card: '#1e293b',
+                        input: '#0f172a',
+                        primary: '#6366f1',
+                        primaryHover: '#4f46e5',
+                        accent: '#ec4899',
+                    },
+                    animation: { 'blob': 'blob 7s infinite' },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .page-view {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-slate-200 font-sans min-h-screen relative overflow-x-hidden">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob">
+        </div>
+        <div
+            class="absolute top-0 right-1/4 w-96 h-96 bg-accent rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000">
+        </div>
+    </div>
+
+    <!-- Navigasi -->
+    <nav class="sticky top-0 z-40 backdrop-blur-md bg-dark/80 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('dashboard')">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                        <i data-lucide="hexagon" class="text-white w-5 h-5"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">AcepFi</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-2">
+                    <button onclick="navigate('dashboard')"
+                        class="nav-link px-4 py-2 rounded-lg text-white bg-slate-800 font-medium transition-all"
+                        data-target="dashboard">Dashboard</button>
+                    <button onclick="navigate('swap')"
+                        class="nav-link px-4 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 font-medium transition-all"
+                        data-target="swap">Swap</button>
+                    <button onclick="navigate('pools')"
+                        class="nav-link px-4 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 font-medium transition-all"
+                        data-target="pools">Pools</button>
+                    <button onclick="navigate('farm')"
+                        class="nav-link px-4 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 font-medium transition-all"
+                        data-target="farm">Farm</button>
+                </div>
+
+                <!-- Connect Wallet Btn -->
+                <div>
+                    <button onclick="openWalletModal()" id="mainWalletBtn"
+                        class="bg-primary hover:bg-primaryHover text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-lg shadow-primary/25 flex items-center gap-2 text-sm sm:text-base">
+                        <i data-lucide="wallet" class="w-4 h-4"></i>
+                        <span id="mainWalletText">Connect Wallet</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Scrollable horizontal) -->
+        <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 border-t border-slate-800 scrollbar-hide">
+            <button onclick="navigate('dashboard')"
+                class="nav-link px-4 py-1.5 rounded-full text-sm text-white bg-slate-800 whitespace-nowrap"
+                data-target="dashboard">Dashboard</button>
+            <button onclick="navigate('swap')"
+                class="nav-link px-4 py-1.5 rounded-full text-sm text-slate-400 bg-slate-800/30 whitespace-nowrap"
+                data-target="swap">Swap</button>
+            <button onclick="navigate('pools')"
+                class="nav-link px-4 py-1.5 rounded-full text-sm text-slate-400 bg-slate-800/30 whitespace-nowrap"
+                data-target="pools">Pools</button>
+            <button onclick="navigate('farm')"
+                class="nav-link px-4 py-1.5 rounded-full text-sm text-slate-400 bg-slate-800/30 whitespace-nowrap"
+                data-target="farm">Farm</button>
+        </div>
+    </nav>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= PAGE: DASHBOARD (Singkat) ================= -->
+        <main id="page-dashboard" class="page-view active space-y-6">
+            <div class="bg-card/60 backdrop-blur-sm border border-slate-700/50 rounded-3xl p-8 shadow-xl">
+                <p class="text-slate-400 font-medium mb-2">Total Value Locked (TVL)</p>
+                <h2 class="text-4xl sm:text-5xl font-bold text-white tracking-tight">$45,124,532.89</h2>
+                <p class="text-slate-400 mt-4 max-w-2xl">Selamat datang di AcepFi. Akses Swap, penyediaan likuiditas
+                    (Pools), dan maksimalkan keuntungan Anda melalui Farming dengan APY terbaik di jaringan.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-card/40 border border-slate-700 rounded-2xl p-6 cursor-pointer hover:bg-card/60 transition-colors"
+                    onclick="navigate('swap')">
+                    <div class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4 text-primary">
+                        <i data-lucide="arrow-down-up"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">Insta Swap</h3>
+                    <p class="text-sm text-slate-400">Tukar token dengan slippage terendah dan rute terbaik.</p>
+                </div>
+                <div class="bg-card/40 border border-slate-700 rounded-2xl p-6 cursor-pointer hover:bg-card/60 transition-colors"
+                    onclick="navigate('pools')">
+                    <div
+                        class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-4 text-emerald-400">
+                        <i data-lucide="droplet"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">Liquidity Pools</h3>
+                    <p class="text-sm text-slate-400">Sediakan likuiditas dan dapatkan biaya dari setiap transaksi.</p>
+                </div>
+                <div class="bg-card/40 border border-slate-700 rounded-2xl p-6 cursor-pointer hover:bg-card/60 transition-colors"
+                    onclick="navigate('farm')">
+                    <div class="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mb-4 text-accent"><i
+                            data-lucide="tractor"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">Yield Farming</h3>
+                    <p class="text-sm text-slate-400">Stake token LP Anda untuk mendapatkan token Acep gratis.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- ================= PAGE: SWAP ================= -->
+        <main id="page-swap" class="page-view max-w-lg mx-auto">
+            <div class="bg-card/80 backdrop-blur-md border border-slate-700 rounded-3xl p-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold text-white">Swap</h3>
+                    <div class="flex gap-3">
+                        <button class="text-slate-400 hover:text-white"><i data-lucide="rotate-ccw"
+                                class="w-5 h-5"></i></button>
+                        <button class="text-slate-400 hover:text-white"><i data-lucide="settings-2"
+                                class="w-5 h-5"></i></button>
+                    </div>
+                </div>
+
+                <div class="space-y-2 relative">
+                    <!-- Input Pay -->
+                    <div
+                        class="bg-input rounded-2xl p-4 border border-slate-800 hover:border-slate-600 transition-colors">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm text-slate-400">You pay</span>
+                            <span class="text-sm text-slate-400">Balance: 2.5 BNB</span>
+                        </div>
+                        <div class="flex justify-between items-center gap-4">
+                            <input type="number" placeholder="0.0"
+                                class="bg-transparent text-4xl text-white outline-none w-full font-medium" value="1">
+                            <button
+                                class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-full transition-colors shrink-0">
+                                <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" class="w-6 h-6" alt="BNB">
+                                <span class="font-semibold text-white">BNB</span>
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="text-sm text-slate-500 mt-2">~$580.00</div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                        <button
+                            class="bg-card border-4 border-slate-800 p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-700 transition-colors">
+                            <i data-lucide="arrow-down" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Input Receive -->
+                    <div
+                        class="bg-input rounded-2xl p-4 border border-slate-800 hover:border-slate-600 transition-colors">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm text-slate-400">You receive</span>
+                            <span class="text-sm text-slate-400">Balance: 0.00 Acep</span>
+                        </div>
+                        <div class="flex justify-between items-center gap-4">
+                            <input type="number" placeholder="0.0"
+                                class="bg-transparent text-4xl text-white outline-none w-full font-medium" value="482.5"
+                                readonly>
+                            <button
+                                class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-full transition-colors shrink-0">
+                                <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-xs"><i
+                                        data-lucide="hexagon" class="w-4 h-4 text-white"></i></div>
+                                <span class="font-semibold text-white">Acep</span>
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="text-sm text-slate-500 mt-2">~$578.50 <span
+                                class="text-xs text-rose-400 ml-1">(-0.25% Impact)</span></div>
+                    </div>
+                </div>
+
+                <div
+                    class="mt-4 p-4 rounded-xl border border-slate-700/50 bg-slate-800/30 text-sm text-slate-400 space-y-2">
+                    <div class="flex justify-between"><span>Rate</span> <span class="text-white">1 BNB = 482.5
+                            Acep</span></div>
+                    <div class="flex justify-between"><span>Slippage Tolerance</span> <span
+                            class="text-white">0.5%</span></div>
+                    <div class="flex justify-between"><span>Network Fee</span> <span class="text-white">~$0.15</span>
+                    </div>
+                </div>
+
+                <button
+                    class="w-full bg-primary hover:bg-primaryHover text-white text-lg font-semibold py-4 rounded-2xl mt-6 transition-all shadow-lg shadow-primary/20"
+                    onclick="alert('Buka dompet untuk konfirmasi!')">
+                    Swap Token
+                </button>
+            </div>
+        </main>
+
+        <!-- ================= PAGE: POOLS ================= -->
+        <main id="page-pools" class="page-view space-y-6">
+            <div class="flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-2">Liquidity Pools</h2>
+                    <p class="text-slate-400">Sediakan likuiditas dan dapatkan porsi dari biaya trading.</p>
+                </div>
+                <button
+                    class="bg-primary hover:bg-primaryHover text-white px-5 py-2.5 rounded-xl font-medium transition-all">+
+                    Add Liquidity</button>
+            </div>
+
+            <div class="bg-card/80 backdrop-blur-md border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-700 text-sm text-slate-400 bg-slate-800/50">
+                                <th class="p-4 font-medium">Pool Name</th>
+                                <th class="p-4 font-medium">Liquidity (TVL)</th>
+                                <th class="p-4 font-medium">Volume 24h</th>
+                                <th class="p-4 font-medium">APR</th>
+                                <th class="p-4 font-medium text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700/50">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-slate-800/30 transition-colors">
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex -space-x-2">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-primary flex items-center justify-center border-2 border-slate-800 z-10">
+                                                <i data-lucide="hexagon" class="w-4 h-4 text-white"></i></div>
+                                            <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png"
+                                                class="w-8 h-8 rounded-full border-2 border-slate-800 bg-slate-800"
+                                                alt="BNB">
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-white">Acep / BNB</div>
+                                            <div class="text-xs text-slate-400">Fee: 0.25%</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-white font-medium">$12,450,000</td>
+                                <td class="p-4 text-white">$1,230,500</td>
+                                <td class="p-4 text-emerald-400 font-bold">18.5%</td>
+                                <td class="p-4 text-right">
+                                    <button
+                                        class="text-primary hover:text-white bg-primary/10 hover:bg-primary/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors">Deposit</button>
+                                </td>
+                            </tr>
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-slate-800/30 transition-colors">
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex -space-x-2">
+                                            <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png"
+                                                class="w-8 h-8 rounded-full border-2 border-slate-800 bg-slate-800 z-10"
+                                                alt="BNB">
+                                            <img src="https://cryptologos.cc/logos/tether-usdt-logo.png"
+                                                class="w-8 h-8 rounded-full border-2 border-slate-800 bg-slate-800"
+                                                alt="USDT">
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-white">BNB / USDT</div>
+                                            <div class="text-xs text-slate-400">Fee: 0.17%</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-white font-medium">$45,200,000</td>
+                                <td class="p-4 text-white">$8,500,000</td>
+                                <td class="p-4 text-emerald-400 font-bold">5.2%</td>
+                                <td class="p-4 text-right">
+                                    <button
+                                        class="text-primary hover:text-white bg-primary/10 hover:bg-primary/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors">Deposit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- ================= PAGE: FARM ================= -->
+        <main id="page-farm" class="page-view space-y-6">
+            <div>
+                <h2 class="text-3xl font-bold text-white mb-2">Yield Farms</h2>
+                <p class="text-slate-400">Stake token LP (Liquidity Provider) Anda untuk farming Acep.</p>
+            </div>
+
+            <!-- Grid Farms -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Farm Card 1 -->
+                <div
+                    class="bg-card/80 backdrop-blur-md border border-slate-700 rounded-3xl p-6 shadow-xl hover:border-primary/50 transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="flex -space-x-2">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-primary flex items-center justify-center border-2 border-slate-800 z-10">
+                                    <i data-lucide="hexagon" class="w-4 h-4 text-white"></i></div>
+                                <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png"
+                                    class="w-8 h-8 rounded-full border-2 border-slate-800 bg-slate-800" alt="BNB">
+                            </div>
+                            <h3 class="font-bold text-white text-lg">Acep-BNB</h3>
+                        </div>
+                        <span
+                            class="bg-primary/20 text-primary text-xs px-2 py-1 rounded border border-primary/20 font-bold">CORE</span>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-slate-400 text-sm">APR</span>
+                        <span class="text-2xl font-bold text-emerald-400">145.2%</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Earned -->
+                        <div class="bg-input rounded-xl p-4 border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <p class="text-xs text-slate-400 uppercase font-semibold mb-1">Acep Earned</p>
+                                <p class="text-xl font-bold text-slate-500">0.00</p>
+                            </div>
+                            <button
+                                class="bg-slate-700 text-slate-400 px-4 py-2 rounded-lg text-sm font-bold cursor-not-allowed">Harvest</button>
+                        </div>
+
+                        <!-- Staked -->
+                        <div class="bg-input rounded-xl p-4 border border-slate-800">
+                            <p class="text-xs text-slate-400 uppercase font-semibold mb-1">Acep-BNB LP Staked</p>
+                            <button onclick="openWalletModal()"
+                                class="w-full bg-primary hover:bg-primaryHover text-white py-2 rounded-lg text-sm font-bold transition-colors mt-2">Connect
+                                Wallet to Stake</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-slate-700 flex justify-between text-sm text-slate-400">
+                        <span>Total Liquidity:</span>
+                        <span class="text-white font-medium">$5,240,000</span>
+                    </div>
+                </div>
+
+                <!-- Farm Card 2 -->
+                <div
+                    class="bg-card/80 backdrop-blur-md border border-slate-700 rounded-3xl p-6 shadow-xl hover:border-primary/50 transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="flex -space-x-2">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-primary flex items-center justify-center border-2 border-slate-800 z-10">
+                                    <i data-lucide="hexagon" class="w-4 h-4 text-white"></i></div>
+                                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png"
+                                    class="w-8 h-8 rounded-full border-2 border-slate-800 bg-slate-800" alt="USDT">
+                            </div>
+                            <h3 class="font-bold text-white text-lg">Acep-USDT</h3>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-slate-400 text-sm">APR</span>
+                        <span class="text-2xl font-bold text-emerald-400">85.4%</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-input rounded-xl p-4 border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <p class="text-xs text-slate-400 uppercase font-semibold mb-1">Acep Earned</p>
+                                <p class="text-xl font-bold text-slate-500">0.00</p>
+                            </div>
+                            <button
+                                class="bg-slate-700 text-slate-400 px-4 py-2 rounded-lg text-sm font-bold cursor-not-allowed">Harvest</button>
+                        </div>
+                        <div class="bg-input rounded-xl p-4 border border-slate-800">
+                            <p class="text-xs text-slate-400 uppercase font-semibold mb-1">LP Staked</p>
+                            <button onclick="openWalletModal()"
+                                class="w-full bg-primary hover:bg-primaryHover text-white py-2 rounded-lg text-sm font-bold transition-colors mt-2">Connect
+                                Wallet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- ================= MODAL: CONNECT WALLET ================= -->
+    <div id="walletModal" class="fixed inset-0 z-50 hidden">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeWalletModal()"></div>
+
+        <!-- Modal Content -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div
+                class="bg-card border border-slate-700 rounded-3xl shadow-2xl overflow-hidden transform transition-all">
+
+                <!-- Header -->
+                <div class="flex justify-between items-center p-6 border-b border-slate-700/50">
+                    <h3 class="text-xl font-bold text-white">Connect Wallet</h3>
+                    <button onclick="closeWalletModal()" class="text-slate-400 hover:text-white transition-colors">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <!-- Body (Wallet Options) -->
+                <div class="p-6 space-y-3">
+                    <p class="text-sm text-slate-400 mb-4">Pilih dompet yang ingin Anda hubungkan ke AcepFi.</p>
+
+                    <!-- Option: MetaMask -->
+                    <button onclick="simulateConnect('MetaMask')"
+                        class="w-full flex items-center justify-between p-4 bg-input border border-slate-700 rounded-2xl hover:border-orange-500 hover:bg-orange-500/10 transition-all group">
+                        <span class="font-semibold text-white group-hover:text-orange-400">MetaMask</span>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask"
+                            class="w-8 h-8">
+                    </button>
+
+                    <!-- Option: TrustWallet -->
+                    <button onclick="simulateConnect('Trust Wallet')"
+                        class="w-full flex items-center justify-between p-4 bg-input border border-slate-700 rounded-2xl hover:border-blue-500 hover:bg-blue-500/10 transition-all group">
+                        <span class="font-semibold text-white group-hover:text-blue-400">Trust Wallet</span>
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center p-1">
+                            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                class="w-full h-full text-[#0500FF]">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M19.684 0L1.758 6.467A1.5 1.5 0 0 0 .75 7.88v12.285c0 10.63 7.828 18.067 18.369 19.742a3 3 0 0 0 .937 0c10.54-1.675 18.369-9.112 18.369-19.742V7.88a1.5 1.5 0 0 0-1.008-1.413L19.684 0zM8.363 19.34l3.181-3.18 8.163 8.164 12.015-12.016 3.18 3.182-15.195 15.195L8.363 19.34z"
+                                    fill="currentColor" />
+                            </svg>
+                        </div>
+                    </button>
+
+                    <!-- Option: WalletConnect -->
+                    <button onclick="simulateConnect('WalletConnect')"
+                        class="w-full flex items-center justify-between p-4 bg-input border border-slate-700 rounded-2xl hover:border-sky-500 hover:bg-sky-500/10 transition-all group">
+                        <span class="font-semibold text-white group-hover:text-sky-400">WalletConnect</span>
+                        <img src="https://raw.githubusercontent.com/WalletConnect/walletconnect-assets/master/Logo/Blue%20(Default)/Logo.svg"
+                            alt="WC" class="w-8 h-8">
+                    </button>
+
+                    <p id="connectingText" class="text-center text-primary font-medium text-sm hidden mt-4">
+                        Menghubungkan ke dompet...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // --- SISTEM NAVIGASI (SPA LOGIC) ---
+        function navigate(pageId) {
+            // 1. Sembunyikan semua page-view
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.remove('active');
+            });
+            // 2. Tampilkan page yang dituju
+            document.getElementById('page-' + pageId).classList.add('active');
+
+            // 3. Update style menu navbar (Desktop & Mobile)
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('data-target') === pageId) {
+                    // State Active
+                    link.classList.remove('text-slate-400', 'bg-slate-800/30', 'bg-slate-800/50');
+                    link.classList.add('text-white', 'bg-slate-800');
+                } else {
+                    // State Inactive
+                    link.classList.remove('text-white', 'bg-slate-800');
+                    link.classList.add('text-slate-400', 'bg-slate-800/30'); // Mobile class base
+                    // Jika desktop, reset hover class
+                    if (window.innerWidth >= 768) link.classList.add('hover:bg-slate-800/50');
+                }
+            });
+        }
+
+        // --- SISTEM MODAL WALLET ---
+        const modal = document.getElementById('walletModal');
+        const mainWalletBtn = document.getElementById('mainWalletBtn');
+        const mainWalletText = document.getElementById('mainWalletText');
+        const connectingText = document.getElementById('connectingText');
+        let isWalletConnected = false;
+
+        function openWalletModal() {
+            if (isWalletConnected) {
+                // Jika sudah konek, kita buat fungsi disconnect
+                if (confirm("Disconnect Wallet?")) {
+                    isWalletConnected = false;
+                    mainWalletText.innerText = "Connect Wallet";
+                    mainWalletBtn.classList.add('bg-primary', 'hover:bg-primaryHover');
+                    mainWalletBtn.classList.remove('bg-slate-800', 'border', 'border-slate-700', 'hover:bg-slate-700');
+                }
+                return;
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeWalletModal() {
+            modal.classList.add('hidden');
+            connectingText.classList.add('hidden');
+        }
+
+        // Simulasi ketika user memilih Wallet
+        function simulateConnect(walletName) {
+            connectingText.innerText = `Menunggu konfirmasi dari ${walletName}...`;
+            connectingText.classList.remove('hidden');
+
+            // Simulasi delay jaringan (1.5 detik)
+            setTimeout(() => {
+                isWalletConnected = true;
+                closeWalletModal();
+
+                // Ubah tombol di Navbar
+                mainWalletText.innerText = "0x89...C4a2";
+                mainWalletBtn.classList.remove('bg-primary', 'hover:bg-primaryHover');
+                mainWalletBtn.classList.add('bg-slate-800', 'border', 'border-slate-700', 'hover:bg-slate-700');
+
+                // Ubah teks di tombol-tombol Farm page
+                document.querySelectorAll('#page-farm button').forEach(btn => {
+                    if (btn.innerText.includes("Connect Wallet")) {
+                        btn.innerText = "Approve Contract";
+                    }
+                });
+
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>
