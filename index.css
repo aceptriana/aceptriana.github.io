@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-body {
+html, body {
     background-color: #0B0A10;
     color: #F8FAFC;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
 }
 .glass-panel {
     background: rgba(19, 17, 28, 0.6);
