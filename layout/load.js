@@ -175,4 +175,9 @@ function initScripts() {
             }, 400); // matches the 0.4s CSS transition
         });
     });
+
+    // 9. Load Web3 Connect Script
+    const web3Script = document.createElement('script');
+    web3Script.src = "/web3-connect.js";
+    document.body.appendChild(web3Script);
 }
