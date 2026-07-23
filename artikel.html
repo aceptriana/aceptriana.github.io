@@ -47,7 +47,15 @@
         <div class="container mx-auto px-4 md:px-6">
             <div class="text-center mb-16" data-aos="fade-up">
                 <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Artikel & <span class="text-gradient">Blog</span></h1>
-                <p class="text-textSecondary text-lg max-w-2xl mx-auto">Berbagi wawasan seputar System Administration, Web3, dan Teknologi Modern langsung dari Blogger.</p>
+                <p class="text-textSecondary text-lg max-w-2xl mx-auto mb-8">Berbagi wawasan seputar System Administration, Web3, dan Teknologi Modern langsung dari Blogger.</p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-md mx-auto">
+                    <div class="relative">
+                        <input type="text" id="search-article" class="w-full bg-surface2 border border-white/10 rounded-full px-5 py-3 pl-12 text-white focus:outline-none focus:border-primary transition-colors shadow-lg shadow-black/20" placeholder="Cari artikel...">
+                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-textSecondary"></i>
+                    </div>
+                </div>
             </div>
 
             <!-- Configuration Alert (Visible if API Key is not set) -->
@@ -86,6 +94,24 @@
                 alertId: 'api-alert',
                 loadingId: 'loading',
                 maxResults: 9
+            });
+
+            // Search logic for articles
+            const searchInput = document.getElementById('search-article');
+            searchInput.addEventListener('keyup', (e) => {
+                const query = e.target.value.toLowerCase();
+                const grid = document.getElementById('blog-grid');
+                // The cards might be <a> or <div> inside the grid
+                const cards = grid.children;
+                
+                Array.from(cards).forEach(card => {
+                    const textContent = card.textContent.toLowerCase();
+                    if (textContent.includes(query)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             });
         });
     </script>

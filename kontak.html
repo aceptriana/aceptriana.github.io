@@ -96,26 +96,32 @@
                 <!-- Contact Form -->
                 <div class="glass-panel p-8 rounded-2xl border border-white/10" data-aos="fade-left">
                     <h3 class="text-2xl font-bold text-white mb-6">Kirim Pesan</h3>
-                    <form action="#" method="POST" class="space-y-4"
-                        onsubmit="event.preventDefault(); alert('Pesan berhasil dikirim! (Demo)');">
+                    <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+                        <!-- Replace with your Access Key -->
+                        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                        
                         <div>
                             <label class="block text-sm font-medium text-textSecondary mb-1">Nama Lengkap</label>
-                            <input type="text"
+                            <input type="text" name="name"
                                 class="w-full bg-surface2 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
                                 placeholder="John Doe" required>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-textSecondary mb-1">Email</label>
-                            <input type="email"
+                            <input type="email" name="email"
                                 class="w-full bg-surface2 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
                                 placeholder="john@example.com" required>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-textSecondary mb-1">Pesan</label>
-                            <textarea rows="4"
+                            <textarea name="message" rows="4"
                                 class="w-full bg-surface2 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors resize-none"
                                 placeholder="Halo, saya ingin bekerja sama..." required></textarea>
                         </div>
+                        
+                        <!-- Optional: redirect URL after submission -->
+                        <input type="hidden" name="redirect" value="https://web3forms.com/success">
+
                         <button type="submit"
                             class="w-full bg-primary hover:bg-primaryHover text-white font-medium py-3 rounded-lg transition-colors shadow-lg shadow-primary/25 flex items-center justify-center space-x-2">
                             <i data-lucide="send" class="w-4 h-4"></i>
