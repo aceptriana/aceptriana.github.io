@@ -159,4 +159,20 @@ function initScripts() {
             }, 1500);
         });
     });
+
+    // 8. Page Transitions
+    const allLinks = document.querySelectorAll('a[href]');
+    allLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const target = link.getAttribute('href');
+            // Allow default for external links, anchor links, mailto, and javascript
+            if (target.startsWith('http') || target.startsWith('mailto:') || target.startsWith('#') || target.startsWith('javascript') || link.target === '_blank') return;
+            
+            e.preventDefault();
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = target;
+            }, 400); // matches the 0.4s CSS transition
+        });
+    });
 }
