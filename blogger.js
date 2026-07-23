@@ -23,9 +23,9 @@ async function loadBloggerPosts(options) {
     if (!blogGrid) return; // if grid is missing, do nothing
 
     const dummyPosts = [
-        { title: "Mengenal Lebih Dalam Red Hat Enterprise Linux (RHEL)", published: "2026-07-20T10:00:00Z", url: "#", content: "<div><img src='https://placehold.co/600x400/1C1929/A78BFA?text=RHEL+Guide'>Red Hat Enterprise Linux adalah distro Linux komersial yang dikembangkan oleh Red Hat. Sangat cocok untuk pasar korporasi...</div>" },
-        { title: "Membangun Smart Contract Pertamamu dengan Solidity", published: "2026-07-15T14:30:00Z", url: "#", content: "<div><img src='https://placehold.co/600x400/1C1929/A78BFA?text=Solidity'>Dalam tutorial ini, kita akan membahas dasar-dasar bahasa pemrograman Solidity untuk membuat Smart Contract di Ethereum...</div>" },
-        { title: "Optimasi SEO pada Aplikasi Single Page (SPA)", published: "2026-07-10T08:15:00Z", url: "#", content: "<div><img src='https://placehold.co/600x400/1C1929/A78BFA?text=SEO+Optimization'>Aplikasi Single Page seringkali bermasalah dengan SEO. Artikel ini membahas cara melakukan pre-rendering agar SEO tetap optimal...</div>" }
+        { id: "dummy1", title: "Mengenal Lebih Dalam Red Hat Enterprise Linux (RHEL)", published: "2026-07-20T10:00:00Z", url: "#", content: "<div><img src='https://placehold.co/600x400/1C1929/A78BFA?text=RHEL+Guide'>Red Hat Enterprise Linux adalah distro Linux komersial yang dikembangkan oleh Red Hat. Sangat cocok untuk pasar korporasi...</div>" },
+        { id: "dummy2", title: "Membangun Smart Contract Pertamamu dengan Solidity", published: "2026-07-15T14:30:00Z", url: "#", content: "<div><img src='https://placehold.co/600x400/1C1929/A78BFA?text=Solidity'>Dalam tutorial ini, kita akan membahas dasar-dasar bahasa pemrograman Solidity untuk membuat Smart Contract di Ethereum...</div>" },
+        { id: "dummy3", title: "Optimasi SEO pada Aplikasi Single Page (SPA)", published: "2026-07-10T08:15:00Z", url: "#", content: "<div><img src='https://placehold.co/600x400/1C1929/A78BFA?text=SEO+Optimization'>Aplikasi Single Page seringkali bermasalah dengan SEO. Artikel ini membahas cara melakukan pre-rendering agar SEO tetap optimal...</div>" }
     ];
 
     function render(posts) {
@@ -46,11 +46,11 @@ async function loadBloggerPosts(options) {
                             <span>${date}</span>
                         </div>
                         <h3 class="text-xl font-bold text-white mb-3 line-clamp-2 hover:text-primary transition-colors">
-                            <a href="${post.url}" target="_blank">${post.title}</a>
+                            <a href="artikel-detail.html?id=${post.id}">${post.title}</a>
                         </h3>
                         <p class="text-textSecondary text-sm mb-6 flex-grow line-clamp-3">${snippet}</p>
-                        <a href="${post.url}" target="_blank" class="inline-flex items-center space-x-2 text-primary hover:text-primaryHover transition-colors text-sm font-medium mt-auto group-hover:translate-x-1 duration-300">
-                            <span>Baca di Blogger</span>
+                        <a href="artikel-detail.html?id=${post.id}" class="inline-flex items-center space-x-2 text-primary hover:text-primaryHover transition-colors text-sm font-medium mt-auto group-hover:translate-x-1 duration-300">
+                            <span>Baca Artikel</span>
                             <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </a>
                     </div>

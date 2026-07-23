@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acep Triana - Memuat Artikel...</title>
+    <!-- CSS Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-config.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+    <link rel="icon" href="assets/img/favicon.ico">
+    
+    <style>
+        /* Prose Styles for Article Content */
+        .prose-custom img {
+            border-radius: 0.75rem;
+            max-width: 100%;
+            height: auto;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .prose-custom h1, .prose-custom h2, .prose-custom h3 {
+            color: #ffffff;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .prose-custom h2 { font-size: 1.875rem; }
+        .prose-custom h3 { font-size: 1.5rem; }
+        .prose-custom p {
+            color: #9ca3af;
+            line-height: 1.75;
+            margin-bottom: 1.25rem;
+        }
+        .prose-custom a {
+            color: #A78BFA;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .prose-custom a:hover {
+            color: #8B5CF6;
+        }
+        .prose-custom ul, .prose-custom ol {
+            color: #9ca3af;
+            margin-left: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .prose-custom ul { list-style-type: disc; }
+        .prose-custom ol { list-style-type: decimal; }
+        .prose-custom blockquote {
+            border-left: 4px solid #A78BFA;
+            padding-left: 1rem;
+            color: #d1d5db;
+            font-style: italic;
+            margin: 1.5rem 0;
+            background: rgba(167, 139, 250, 0.05);
+            padding: 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        .prose-custom pre {
+            background: #111827;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            color: #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin: 1.5rem 0;
+        }
+        .prose-custom code {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+        }
+        .prose-custom pre code {
+            background: transparent;
+            padding: 0;
+        }
+        /* Style for the reading progress bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 9999; /* Ensure it stays on top */
+        }
+        #progress-bar {
+            height: 100%;
+            background: #A78BFA;
+            width: 0%;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body class="bg-background text-textPrimary font-sans antialiased overflow-x-hidden selection:bg-primary/30 selection:text-white">
+    
+    <!-- Reading Progress Bar -->
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <main class="pt-24 md:pt-28 pb-20 min-h-screen">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-3xl mx-auto">
+                <a href="artikel" class="inline-flex items-center space-x-2 text-textSecondary hover:text-white transition-colors mb-8">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Kembali ke Artikel</span>
+                </a>
+                
+                <!-- Loading Indicator -->
+                <div id="loading" class="flex flex-col justify-center items-center py-20">
+                    <i data-lucide="loader-2" class="w-10 h-10 text-primary animate-spin mb-4"></i>
+                    <p class="text-textSecondary text-sm animate-pulse">Memuat artikel dari Blogger...</p>
+                </div>
+                
+                <!-- Error Message -->
+                <div id="error-message" class="hidden text-center py-20">
+                    <i data-lucide="alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
+                    <h2 class="text-2xl font-bold text-white mb-2">Artikel Tidak Ditemukan</h2>
+                    <p class="text-textSecondary mb-6">Maaf, artikel yang Anda cari tidak dapat ditemukan atau terjadi masalah koneksi.</p>
+                    <a href="artikel" class="inline-flex items-center space-x-2 bg-primary hover:bg-primaryHover text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Kembali ke Daftar Artikel
+                    </a>
+                </div>
+
+                <!-- Article Content Container -->
+                <article id="article-content" class="hidden" data-aos="fade-up">
+                    <div class="mb-8">
+                        <div class="flex items-center space-x-4 text-textSecondary text-sm mb-4">
+                            <div class="flex items-center space-x-1.5">
+                                <i data-lucide="calendar" class="w-4 h-4 text-primary"></i>
+                                <span id="article-date"></span>
+                            </div>
+                            <div class="flex items-center space-x-1.5 hidden" id="article-author-container">
+                                <i data-lucide="user" class="w-4 h-4 text-primary"></i>
+                                <span id="article-author"></span>
+                            </div>
+                        </div>
+                        
+                        <h1 id="article-title" class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight"></h1>
+                        
+                        <div class="flex flex-wrap gap-2 mb-8" id="article-tags">
+                            <!-- Tags injected here -->
+                        </div>
+                    </div>
+                    
+                    <div id="article-body" class="prose-custom bg-surface2/30 rounded-2xl p-6 md:p-10 border border-white/5">
+                        <!-- Content injected here -->
+                    </div>
+                    
+                    <!-- Share & Actions -->
+                    <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-6">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-textSecondary font-medium">Bagikan:</span>
+                            <a href="#" id="share-twitter" target="_blank" class="w-10 h-10 rounded-full bg-surface2 flex items-center justify-center text-textSecondary hover:text-[#1DA1F2] hover:border-[#1DA1F2] border border-white/5 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                            </a>
+                            <a href="#" id="share-facebook" target="_blank" class="w-10 h-10 rounded-full bg-surface2 flex items-center justify-center text-textSecondary hover:text-[#4267B2] hover:border-[#4267B2] border border-white/5 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"/></svg>
+                            </a>
+                        </div>
+                        <a href="#" id="original-blogger-link" target="_blank" class="inline-flex items-center space-x-2 text-textSecondary hover:text-white transition-colors border-b border-transparent hover:border-white pb-1">
+                            <span>Buka di situs Blogger asli</span>
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="layout/load.js"></script>
+    <script src="blogger.js"></script> <!-- To get BLOG_ID and API_KEY -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Setup Reading Progress Bar
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById('progress-bar').style.width = scrolled + '%';
+            });
+
+            // Get Article ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error-message');
+            const articleEl = document.getElementById('article-content');
+
+            if (!postId) {
+                loadingEl.classList.add('hidden');
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                // Fetch single post
+                const response = await fetch(`https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts/${postId}?key=${API_KEY}`);
+                
+                if (!response.ok) {
+                    throw new Error('Post not found or API error');
+                }
+                
+                const post = await response.json();
+                
+                // Update Page Title
+                document.title = `${post.title} - Acep Triana`;
+                
+                // Set Content
+                document.getElementById('article-title').textContent = post.title;
+                document.getElementById('article-body').innerHTML = post.content;
+                
+                // Set Date
+                const date = new Date(post.published).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+                document.getElementById('article-date').textContent = date;
+                
+                // Set Author if exists
+                if (post.author && post.author.displayName) {
+                    document.getElementById('article-author').textContent = post.author.displayName;
+                    document.getElementById('article-author-container').classList.remove('hidden');
+                }
+                
+                // Set Tags/Labels if exist
+                if (post.labels && post.labels.length > 0) {
+                    const tagsContainer = document.getElementById('article-tags');
+                    post.labels.forEach(label => {
+                        const span = document.createElement('span');
+                        span.className = 'px-3 py-1 bg-surface2 border border-white/10 rounded-full text-xs text-textSecondary hover:text-primary transition-colors cursor-default';
+                        span.textContent = label;
+                        tagsContainer.appendChild(span);
+                    });
+                }
+                
+                // Set Share Links
+                const pageUrl = encodeURIComponent(window.location.href);
+                const pageTitle = encodeURIComponent(post.title);
+                document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+                document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+                
+                // Set Original Link
+                document.getElementById('original-blogger-link').href = post.url;
+
+                // Hide loading, show content
+                loadingEl.classList.add('hidden');
+                articleEl.classList.remove('hidden');
+                
+                // Initialize icons
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+
+            } catch (error) {
+                console.error('Error fetching article details:', error);
+                loadingEl.classList.add('hidden');
+                errorEl.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
