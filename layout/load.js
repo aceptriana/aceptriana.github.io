@@ -176,8 +176,13 @@ function initScripts() {
         });
     });
 
+    // Fix for Back-Forward Cache (BFCache) keeping fade-out class
+    window.addEventListener('pageshow', () => {
+        document.body.classList.remove('fade-out');
+    });
+
     // 9. Load Web3 Connect Script
     const web3Script = document.createElement('script');
-    web3Script.src = "/web3-connect.js";
+    web3Script.src = "/assets/js/web3-connect.js";
     document.body.appendChild(web3Script);
 }
