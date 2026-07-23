@@ -17,14 +17,14 @@ function initWeb3Connect() {
                 textSpan.textContent = address ? formatAddress(address) : "Connect Metamask";
             }
             if (address) {
-                // Connected State: Green button
-                btn.classList.add('bg-emerald-600', 'border-emerald-500', 'shadow-emerald-500/25');
-                btn.classList.remove('bg-primary', 'border-primary/30', 'shadow-primary/25', 'hover:bg-primaryHover');
-                btn.classList.add('hover:bg-emerald-700');
+                // Connected State: Purple Outline
+                btn.classList.add('bg-surface2', 'border-primary', 'shadow-primary/25', 'text-white');
+                btn.classList.remove('bg-primary', 'border-primary/30', 'hover:bg-primaryHover');
+                btn.classList.add('hover:bg-primary/20');
             } else {
                 // Disconnected State: Default button
-                btn.classList.remove('bg-emerald-600', 'border-emerald-500', 'shadow-emerald-500/25', 'hover:bg-emerald-700');
-                btn.classList.add('bg-primary', 'border-primary/30', 'shadow-primary/25', 'hover:bg-primaryHover');
+                btn.classList.remove('bg-surface2', 'border-primary', 'shadow-primary/25', 'hover:bg-primary/20');
+                btn.classList.add('bg-primary', 'border-primary/30', 'hover:bg-primaryHover');
             }
         });
     };
@@ -66,11 +66,7 @@ function initWeb3Connect() {
 
     // 3. Attach click event listener to all connect buttons
     connectBtns.forEach(btn => {
-        // Clone button to strip old listeners (if any exist from earlier initializations)
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
-        
-        newBtn.addEventListener('click', (e) => {
+        btn.addEventListener('click', (e) => {
             e.preventDefault();
             connectWallet();
         });
