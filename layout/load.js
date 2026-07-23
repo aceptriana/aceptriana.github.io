@@ -108,25 +108,30 @@ function initScripts() {
     connectBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const textSpan = btn.querySelector('.wallet-text');
-            const iconSvg = btn.querySelector('.wallet-icon');
+            const iconImg = btn.querySelector('.wallet-icon');
             
             if (btn.classList.contains('connected')) return;
 
             // Loading state
             textSpan.textContent = 'Connecting...';
-            iconSvg.innerHTML = '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" stroke-dasharray="31.4 31.4" class="animate-spin"></circle>';
+            // Replace with a simple SVG spinner by injecting an SVG next to it and hiding img
+            iconImg.style.display = 'none';
+            const spinner = document.createElement('div');
+            spinner.className = 'w-5 h-5 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent spinner-temp';
+            btn.insertBefore(spinner, textSpan);
             
             setTimeout(() => {
                 // Connected state
                 btn.classList.add('connected');
                 textSpan.textContent = '0x71C...9A23';
-                iconSvg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
-                btn.classList.replace('from-orange-500', 'from-green-500');
-                btn.classList.replace('to-amber-500', 'to-emerald-500');
-                btn.classList.replace('hover:from-orange-600', 'hover:from-green-600');
-                btn.classList.replace('hover:to-amber-600', 'hover:to-emerald-600');
-                btn.classList.replace('shadow-orange-500/25', 'shadow-green-500/25');
-                btn.classList.replace('border-orange-400/30', 'border-green-400/30');
+                
+                // Remove spinner and show a checkmark or keep fox
+                const tempSpinner = btn.querySelector('.spinner-temp');
+                if (tempSpinner) tempSpinner.remove();
+                
+                iconImg.style.display = 'block';
+                // Keep the original fox icon or change to something else
+                // We'll keep the fox icon as requested
 
                 // Show toast
                 if (toast) {
