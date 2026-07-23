@@ -1,31 +1,22 @@
 <header class="fixed top-0 w-full z-50 glass-panel border-b border-white/5 transition-all duration-300" id="header">
         <div class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
-            <!-- Logo -->
             <a href="#" class="text-2xl font-bold tracking-tighter text-white">
                 Acep Triana<span class="text-primary">.</span>
             </a>
-
-            <!-- Desktop Nav -->
             <nav class="hidden md:flex items-center space-x-8">
                 <a href="/" class="text-white font-medium hover:text-primary transition-colors pb-1 border-b-2 border-primary">Beranda</a>
                 <a href="tentang" class="text-textSecondary hover:text-white transition-colors">Tentang</a>
                 <a href="proyek" class="text-textSecondary hover:text-white transition-colors">Proyek</a>
                 <a href="artikel" class="text-textSecondary hover:text-white transition-colors">Artikel</a>
             </nav>
-
-            <!-- CTA Button -->
             <button class="btn-connect-wallet hidden md:flex items-center space-x-2 bg-primary hover:bg-primaryHover text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-lg shadow-primary/25 border border-primary/30">
                 <img src="/assets/img/MetaMask-icon-fox.svg" alt="Metamask" class="w-5 h-5 wallet-icon object-contain" />
                 <span class="wallet-text">Connect Metamask</span>
             </button>
-
-            <!-- Mobile Menu Toggle -->
             <button class="md:hidden text-textSecondary hover:text-white p-2 glass-panel rounded-lg" id="mobile-menu-btn">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
-
-        <!-- Mobile Nav Menu (Hidden by default) -->
         <div class="md:hidden absolute top-full left-0 w-full bg-background shadow-2xl border-b border-white/10 hidden flex-col items-center py-4 space-y-4 z-50" id="mobile-menu">
             <a href="/" class="text-white font-medium hover:text-primary transition-colors">Beranda</a>
             <a href="tentang" class="text-textSecondary hover:text-white transition-colors">Tentang</a>
@@ -36,8 +27,6 @@
                 <span class="wallet-text">Connect Metamask</span>
             </button>
         </div>
-
-        <!-- Web3 Reward Toast -->
         <div id="web3-toast" class="fixed top-24 right-6 bg-gradient-to-r from-green-500/90 to-emerald-600/90 backdrop-blur-md border border-green-400/50 text-white px-4 md:px-6 py-4 rounded-xl shadow-2xl shadow-green-500/20 transform transition-all duration-500 translate-x-[150%] opacity-0 flex items-center space-x-4 z-50">
             <div class="bg-white/20 p-2 rounded-full">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
