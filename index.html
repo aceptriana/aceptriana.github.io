@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,7 +69,7 @@
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
                             <span class="text-xs text-textSecondary ml-4 font-mono">guest@acep-server:~</span>
                         </div>
-                        <div class="p-4 bg-background/80 font-mono text-sm h-56 overflow-y-auto" id="terminal-body">
+                        <div class="p-4 bg-background/80 font-mono text-sm h-auto min-h-[16rem] overflow-hidden flex flex-col justify-center" id="terminal-body">
                             <div class="flex items-center text-green-400">
                                 <span class="mr-2">➜</span>
                                 <span class="text-white">~</span>
@@ -122,7 +122,7 @@
                     </div>
 
                     <!-- Main Avatar (Placeholder) -->
-                    <div class="relative w-72 h-72 md:w-96 md:h-96 rounded-b-full overflow-hidden border-b-4 border-primary z-20">
+                    <div class="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-primary z-20 shadow-lg shadow-primary/20">
                          <img src="assets\img\about.jfif" alt="Acep Triana" class="w-full h-full object-cover object-top">
                     </div>
 
