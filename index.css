@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+body {
+    background-color: #0B0A10;
+    color: #F8FAFC;
+}
+.glass-panel {
+    background: rgba(19, 17, 28, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.text-gradient {
+    background: linear-gradient(to right, #A78BFA, #C084FC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Blob animations */
+.blob {
+    position: absolute;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.5;
+    border-radius: 50%;
+}
+.blob-1 { top: 10%; left: 10%; width: 300px; height: 300px; background: rgba(109, 40, 217, 0.3); }
+.blob-2 { top: 40%; right: 10%; width: 400px; height: 400px; background: rgba(109, 40, 217, 0.2); }
+.blob-3 { bottom: 10%; left: 20%; width: 350px; height: 350px; background: rgba(109, 40, 217, 0.25); }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0B0A10; 
+}
+::-webkit-scrollbar-thumb {
+    background: #1C1929; 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #2D2840; 
+}

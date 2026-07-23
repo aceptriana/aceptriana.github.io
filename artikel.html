@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acep Triana - Artikel</title>
+    <!-- CSS Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-config.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+    <link rel="icon" href="assets/img/favicon.ico">
+
+
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Kumpulan tulisan dan artikel blog seputar teknologi, Linux, Web3, dan panduan IT oleh Acep Triana.">
+    <meta name="keywords" content="Acep Triana, Portofolio IT, System Administrator, Web3, Smart Contract, Network Engineer, Developer, Linux">
+    <meta name="author" content="Acep Triana">
+    <link rel="canonical" href="https://www.aceptriana.my.id/artikel.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.aceptriana.my.id/artikel.html">
+    <meta property="og:title" content="Acep Triana - Artikel">
+    <meta property="og:description" content="Kumpulan tulisan dan artikel blog seputar teknologi, Linux, Web3, dan panduan IT oleh Acep Triana.">
+    <meta property="og:image" content="https://www.aceptriana.my.id/assets/img/android-chrome-512x512.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.aceptriana.my.id/artikel.html">
+    <meta property="twitter:title" content="Acep Triana - Artikel">
+    <meta property="twitter:description" content="Kumpulan tulisan dan artikel blog seputar teknologi, Linux, Web3, dan panduan IT oleh Acep Triana.">
+    <meta property="twitter:image" content="https://www.aceptriana.my.id/assets/img/android-chrome-512x512.png">
+    
+</head>
+<body class="bg-background text-textPrimary font-sans antialiased overflow-x-hidden selection:bg-primary/30 selection:text-white">
+    
+    <div id="header-placeholder"></div>
+
+    <main class="pt-28 pb-20 min-h-screen">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Artikel & <span class="text-gradient">Blog</span></h1>
+                <p class="text-textSecondary text-lg max-w-2xl mx-auto">Berbagi wawasan seputar System Administration, Web3, dan Teknologi Modern langsung dari Blogger.</p>
+            </div>
+
+            <!-- Configuration Alert (Visible if API Key is not set) -->
+            <div id="api-alert" class="hidden max-w-2xl mx-auto mb-12 glass-panel border border-yellow-500/50 p-6 rounded-2xl">
+                <div class="flex items-start space-x-4">
+                    <i data-lucide="alert-triangle" class="w-6 h-6 text-yellow-500 shrink-0 mt-1"></i>
+                    <div>
+                        <h3 class="text-yellow-500 font-bold mb-2">Blogger API Belum Dikonfigurasi</h3>
+                        <p class="text-textSecondary text-sm mb-4">Untuk menampilkan artikel dari Blogger, silakan buka file <code>artikel.html</code> dan masukkan <strong>BLOG_ID</strong> serta <strong>API_KEY</strong> Anda pada blok JavaScript di bagian bawah.</p>
+                        <p class="text-textSecondary text-sm">Untuk sementara, berikut adalah contoh tampilan (dummy) artikel.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Grid -->
+            <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog cards will be injected here by JS -->
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div id="loading" class="flex justify-center items-center py-12 hidden">
+                <i data-lucide="loader-2" class="w-8 h-8 text-primary animate-spin"></i>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="layout/load.js"></script>
+    
+    <script src="blogger.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBloggerPosts({
+                gridId: 'blog-grid',
+                alertId: 'api-alert',
+                loadingId: 'loading',
+                maxResults: 9
+            });
+        });
+    </script>
+</body>
+</html>

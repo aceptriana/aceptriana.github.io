@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acep Triana - Sertifikat & Penghargaan</title>
+    <!-- CSS Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-config.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+    
+    <style>
+        /* Custom modal styles for image preview */
+        #img-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #img-modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #img-modal.flex {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #img-modal img {
+            transition: transform 0.3s ease-in-out;
+            transform: scale(0.95);
+        }
+        #img-modal.flex img {
+            transform: scale(1);
+        }
+    </style>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+    <link rel="icon" href="assets/img/favicon.ico">
+
+
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Daftar sertifikasi profesional IT (termasuk RHCSA) dan penghargaan yang diraih oleh Acep Triana.">
+    <meta name="keywords" content="Acep Triana, Portofolio IT, System Administrator, Web3, Smart Contract, Network Engineer, Developer, Linux">
+    <meta name="author" content="Acep Triana">
+    <link rel="canonical" href="https://www.aceptriana.my.id/sertifikat.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.aceptriana.my.id/sertifikat.html">
+    <meta property="og:title" content="Acep Triana - Sertifikat & Penghargaan">
+    <meta property="og:description" content="Daftar sertifikasi profesional IT (termasuk RHCSA) dan penghargaan yang diraih oleh Acep Triana.">
+    <meta property="og:image" content="https://www.aceptriana.my.id/assets/img/android-chrome-512x512.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.aceptriana.my.id/sertifikat.html">
+    <meta property="twitter:title" content="Acep Triana - Sertifikat & Penghargaan">
+    <meta property="twitter:description" content="Daftar sertifikasi profesional IT (termasuk RHCSA) dan penghargaan yang diraih oleh Acep Triana.">
+    <meta property="twitter:image" content="https://www.aceptriana.my.id/assets/img/android-chrome-512x512.png">
+    
+</head>
+<body class="bg-background text-textPrimary font-sans antialiased overflow-x-hidden selection:bg-primary/30 selection:text-white">
+    
+    <div id="header-placeholder"></div>
+
+    <main class="pt-28 pb-20 min-h-screen relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <!-- Header Section -->
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Sertifikat & <span class="text-gradient">Penghargaan</span></h1>
+                <p class="text-textSecondary text-lg max-w-2xl mx-auto">Koleksi sertifikasi profesional, partisipasi program, dan penghargaan yang saya raih selama perjalanan karir dan studi.</p>
+            </div>
+
+            <!-- Certifications Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="cert-grid">
+                <!-- Certificate cards will be injected here -->
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <!-- Image Preview Modal -->
+    <div id="img-modal" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm items-center justify-center p-4">
+        <button id="close-modal" class="absolute top-6 right-6 text-white hover:text-primary transition-colors glass-panel p-2 rounded-full">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <div class="max-w-5xl w-full max-h-[90vh] flex items-center justify-center relative">
+            <img id="modal-img" src="" alt="Sertifikat" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10">
+            <div id="modal-caption" class="absolute -bottom-10 left-0 w-full text-center text-white font-medium text-lg"></div>
+        </div>
+    </div>
+
+    <script src="layout/load.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const certData = [
+                { title: "Red Hat Certified System Administrator (RHCSA)", img: "Red_Hat_Certified_System_Administrator__RHCSA__Badge20231214-29-2oesfo.png" },
+                { title: "Linux System Administration", img: "Linux System Administration.png" },
+                { title: "Network Computer Engineering (NCE4)", img: "NCE4.png" },
+                { title: "Network Computer Engineering (NCE7)", img: "NCE7.png" },
+                { title: "Teknik Komputer dan Jaringan", img: "TKJ.jpg" },
+                { title: "Cyber Academy", img: "Cyber Academy.png" },
+                { title: "Cybersecurity Awareness", img: "Cybersecurity Awareness Cybersecurity Terminology.png" },
+                { title: "Database", img: "Database.png" },
+                { title: "Python Programming", img: "Python Programing.png" },
+                { title: "Python Data", img: "Python Data.png" },
+                { title: "Juara 1 Analisis Program", img: "Juara 1 Analisis Program.png" },
+                { title: "Healthkathon", img: "Healthkathon.png" },
+                { title: "MSIB", img: "MSIB.png" },
+                { title: "P2MW", img: "p2mw.png" },
+                { title: "PMM", img: "pmm.png" },
+                { title: "PPK Ormawa", img: "ppk.png" }
+            ];
+
+            const certGrid = document.getElementById('cert-grid');
+            
+            // Render certificates
+            certData.forEach((cert, index) => {
+                const delay = (index % 4) * 100; // Staggered animation
+                
+                const card = `
+                    <div class="glass-panel rounded-2xl overflow-hidden border border-white/10 group hover:border-primary/50 transition-all duration-300 flex flex-col cursor-pointer" 
+                         data-aos="fade-up" data-aos-delay="${delay}"
+                         onclick="openModal('assets/img/sertifikat/${cert.img}', '${cert.title}')">
+                        <div class="relative h-56 overflow-hidden bg-white/5 p-4 flex items-center justify-center">
+                            <img src="assets/img/sertifikat/${cert.img}" alt="${cert.title}" 
+                                 class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105 drop-shadow-md">
+                            
+                            <!-- Overlay icon on hover -->
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                                <div class="bg-primary/90 text-white p-3 rounded-full transform scale-50 group-hover:scale-100 transition-transform duration-300 delay-100">
+                                    <i data-lucide="maximize-2" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-5 border-t border-white/5 flex-grow flex items-center">
+                            <h3 class="text-sm md:text-base font-semibold text-white group-hover:text-primary transition-colors line-clamp-2">
+                                ${cert.title}
+                            </h3>
+                        </div>
+                    </div>
+                `;
+                certGrid.insertAdjacentHTML('beforeend', card);
+            });
+
+            // Initialize icons for newly added HTML
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // Modal Logic
+            const modal = document.getElementById('img-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalCaption = document.getElementById('modal-caption');
+            const closeBtn = document.getElementById('close-modal');
+
+            window.openModal = function(imgSrc, title) {
+                modalImg.src = imgSrc;
+                modalCaption.textContent = title;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+
+            function closeModal() {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+                // Optional: clear src after animation finishes to prevent flash next time
+                setTimeout(() => { modalImg.src = ''; }, 300);
+            }
+
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal || e.target.closest('.max-w-5xl') === null || e.target === modalImg) {
+                    closeModal();
+                }
+            });
+            
+            // Allow clicking image itself to close
+            modalImg.addEventListener('click', closeModal);
+
+            // Escape key to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('flex')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
