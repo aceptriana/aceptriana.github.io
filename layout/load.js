@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.insertAdjacentHTML('afterbegin', blobs);
 
     Promise.all([
-        fetch('layout/header.html').then(res => res.text()),
-        fetch('layout/footer.html').then(res => res.text())
+        fetch('/layout/header.html').then(res => res.text()),
+        fetch('/layout/footer.html').then(res => res.text())
     ]).then(([headerHtml, footerHtml]) => {
         const headerEl = document.getElementById('header-placeholder');
         if (headerEl) headerEl.outerHTML = headerHtml;
