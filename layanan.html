@@ -43,53 +43,74 @@
     
     <div id="header-placeholder"></div>
 
-    <main class="pt-24 md:pt-28">
-<section id="services" class="container mx-auto px-4 md:px-6 py-8 z-20 relative" data-aos="fade-up">
-            <div class="glass-panel rounded-2xl p-6 border border-white/10 flex flex-wrap gap-6 items-start justify-between">
+    <main class="pt-24 md:pt-28 pb-20 min-h-screen">
+        <div class="container mx-auto px-4 md:px-6">
+            <!-- Header Section -->
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Layanan <span class="text-gradient">Kami</span></h1>
+                <p class="text-textSecondary text-lg max-w-2xl mx-auto">Berbagai solusi teknologi yang saya tawarkan untuk membantu mewujudkan dan mengamankan visi digital Anda.</p>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <div class="flex items-start space-x-4 w-full md:w-[calc(50%-12px)] lg:w-auto flex-1">
-                    <div class="p-3 rounded-lg bg-surface2 text-primary border border-white/5">
-                        <i data-lucide="server" class="w-6 h-6"></i>
+                <!-- Service 1: System Administration -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 rounded-xl bg-surface2 text-primary border border-white/5 flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform">
+                        <i data-lucide="server" class="w-7 h-7"></i>
                     </div>
-                    <div>
-                        <h3 class="text-white font-semibold mb-1">System Administrator</h3>
-                        <p class="text-textSecondary text-sm leading-tight">Linux, Server, Cloud & Infrastructure Management</p>
-                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">System Administration</h3>
+                    <p class="text-textSecondary leading-relaxed text-sm md:text-base">Pengelolaan, pemeliharaan, dan konfigurasi server untuk menjamin ketersediaan tinggi, performa maksimal, serta uptime dari server Anda.</p>
                 </div>
 
-                <div class="flex items-start space-x-4 w-full md:w-[calc(50%-12px)] lg:w-auto flex-1">
-                    <div class="p-3 rounded-lg bg-surface2 text-primary border border-white/5">
-                        <i data-lucide="monitor" class="w-6 h-6"></i>
+                <!-- Service 2: Web Development -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 rounded-xl bg-surface2 text-primary border border-white/5 flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform">
+                        <i data-lucide="code" class="w-7 h-7"></i>
                     </div>
-                    <div>
-                        <h3 class="text-white font-semibold mb-1">Full-Stack Developer</h3>
-                        <p class="text-textSecondary text-sm leading-tight">Modern Web Development dengan berbagai teknologi</p>
-                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Web Development</h3>
+                    <p class="text-textSecondary leading-relaxed text-sm md:text-base">Pembuatan website modern, responsif, dan dinamis menggunakan teknologi terkini untuk kebutuhan profil perusahaan, e-commerce, hingga sistem internal.</p>
                 </div>
 
-                <div class="flex items-start space-x-4 w-full md:w-[calc(50%-12px)] lg:w-auto flex-1">
-                    <div class="p-3 rounded-lg bg-surface2 text-primary border border-white/5">
-                        <i data-lucide="hexagon" class="w-6 h-6"></i>
+                <!-- Service 3: Web3 Development -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 rounded-xl bg-surface2 text-primary border border-white/5 flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform">
+                        <i data-lucide="hexagon" class="w-7 h-7"></i>
                     </div>
-                    <div>
-                        <h3 class="text-white font-semibold mb-1">Web3 Developer</h3>
-                        <p class="text-textSecondary text-sm leading-tight">Blockchain, Smart Contract & DApps Development</p>
-                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Web3 Development</h3>
+                    <p class="text-textSecondary leading-relaxed text-sm md:text-base">Pengembangan ekosistem terdesentralisasi (DApps), pembuatan Smart Contract, integrasi Web3, serta peluncuran aset digital berbasis blockchain.</p>
                 </div>
 
-                <div class="flex items-start space-x-4 w-full md:w-[calc(50%-12px)] lg:w-auto flex-1">
-                    <div class="p-3 rounded-lg bg-surface2 text-primary border border-white/5">
-                        <i data-lucide="settings" class="w-6 h-6"></i>
+                <!-- Service 4: DevOps & Cloud -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-14 h-14 rounded-xl bg-surface2 text-primary border border-white/5 flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform">
+                        <i data-lucide="cloud" class="w-7 h-7"></i>
                     </div>
-                    <div>
-                        <h3 class="text-white font-semibold mb-1">DevOps Engineer</h3>
-                        <p class="text-textSecondary text-sm leading-tight">CI/CD, Docker, Automation & Monitoring</p>
+                    <h3 class="text-2xl font-bold text-white mb-3">DevOps & Cloud</h3>
+                    <p class="text-textSecondary leading-relaxed text-sm md:text-base">Otomatisasi alur CI/CD, manajemen infrastruktur sebagai kode (IaC), containerization, dan arsitektur pada layanan Cloud seperti AWS atau GCP.</p>
+                </div>
+
+                <!-- Service 5: Cybersecurity -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-14 h-14 rounded-xl bg-surface2 text-primary border border-white/5 flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform">
+                        <i data-lucide="shield" class="w-7 h-7"></i>
                     </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Cybersecurity</h3>
+                    <p class="text-textSecondary leading-relaxed text-sm md:text-base">Audit keamanan sistem, hardening infrastruktur, perlindungan dari serangan siber, dan penerapan praktik keamanan (Best Practices) secara menyeluruh.</p>
+                </div>
+
+                <!-- Service 6: Konsultasi IT -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="600">
+                    <div class="w-14 h-14 rounded-xl bg-surface2 text-primary border border-white/5 flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform">
+                        <i data-lucide="messages-square" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Konsultasi IT</h3>
+                    <p class="text-textSecondary leading-relaxed text-sm md:text-base">Memberikan masukan, strategi, dan roadmap mengenai transformasi digital, pemilihan teknologi yang efisien, hingga penyelesaian masalah teknis IT.</p>
                 </div>
 
             </div>
-        </section>
-</main>
+        </div>
+    </main>
 
     <div id="footer-placeholder"></div>
 
