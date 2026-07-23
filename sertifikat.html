@@ -6,10 +6,10 @@
     <title>Acep Triana - Sertifikat & Penghargaan</title>
     <!-- CSS Tailwind & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="tailwind-config.js"></script>
+    <script src="/tailwind-config.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/index.css">
     
     <style>
         /* Custom modal styles for image preview */
@@ -34,10 +34,10 @@
     </style>
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
-    <link rel="icon" href="assets/img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+    <link rel="icon" href="/assets/img/favicon.ico">
 
 
     <!-- SEO & Meta Tags -->
@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <script src="layout/load.js"></script>
+    <script src="/layout/load.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const certData = [
@@ -126,7 +126,7 @@
                          data-aos="fade-up" data-aos-delay="${delay}"
                          onclick="openModal('assets/img/sertifikat/${cert.img}', '${cert.title}')">
                         <div class="relative h-56 overflow-hidden bg-white/5 p-4 flex items-center justify-center">
-                            <img src="assets/img/sertifikat/${cert.img}" alt="${cert.title}" 
+                            <img src="/assets/img/sertifikat/${cert.img}" alt="${cert.title}" 
                                  class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105 drop-shadow-md">
                             
                             <!-- Overlay icon on hover -->
@@ -193,3 +193,4 @@
     </script>
 </body>
 </html>
+

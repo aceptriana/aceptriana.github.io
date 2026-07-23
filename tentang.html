@@ -6,16 +6,16 @@
     <title>Acep Triana - Portofolio</title>
     <!-- CSS Tailwind & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="tailwind-config.js"></script>
+    <script src="/tailwind-config.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/index.css">
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
-    <link rel="icon" href="assets/img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+    <link rel="icon" href="/assets/img/favicon.ico">
 
 
     <!-- SEO & Meta Tags -->
@@ -80,7 +80,7 @@
                 <div class="w-full lg:w-1/2 flex justify-center">
                     <div class="relative rounded-2xl overflow-hidden border border-white/10 group w-full max-w-sm aspect-[4/5] shadow-2xl">
                         <!-- Image for coding setup -->
-                        <img src="assets\img\about.jfif" alt="Coding Setup" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img src="/assets/img/about.jfif" alt="Coding Setup" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0B0A10] via-transparent to-transparent opacity-80"></div>
                         
                         <!-- Floating badge -->
@@ -208,7 +208,7 @@
 
             <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-primary/50 transition-colors flex flex-col md:flex-row gap-8 items-start md:items-center">
                 <div class="w-32 h-32 shrink-0 bg-white/5 rounded-xl p-4 flex items-center justify-center border border-white/10">
-                    <img src="assets/img/universitas-kuningan.png" alt="Universitas Kuningan" class="max-w-full max-h-full object-contain filter drop-shadow-xl">
+                    <img src="/assets/img/universitas-kuningan.png" alt="Universitas Kuningan" class="max-w-full max-h-full object-contain filter drop-shadow-xl">
                 </div>
                 <div>
                     <span class="inline-block px-3 py-1 bg-primary/20 text-primary border border-primary/20 rounded-full text-xs font-semibold mb-3 tracking-wider">2021 - 2025</span>
@@ -220,7 +220,7 @@
     
             <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-primary/50 transition-colors flex flex-col md:flex-row gap-8 items-start md:items-center">
                 <div class="w-32 h-32 shrink-0 bg-white/5 rounded-xl p-4 flex items-center justify-center border border-white/10">
-                    <img src="assets/img/smk-cibening.png" alt="SMK Cibening" class="max-w-full max-h-full object-contain filter drop-shadow-xl">
+                    <img src="/assets/img/smk-cibening.png" alt="SMK Cibening" class="max-w-full max-h-full object-contain filter drop-shadow-xl">
                 </div>
                 <div>
                     <span class="inline-block px-3 py-1 bg-primary/20 text-primary border border-primary/20 rounded-full text-xs font-semibold mb-3 tracking-wider">2018 - 2020</span>
@@ -565,7 +565,7 @@
         </div>
     </div>
 
-    <script src="layout/load.js"></script>
+    <script src="/layout/load.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const certData = [
@@ -598,7 +598,7 @@
                          data-aos="fade-up" data-aos-delay="${delay}"
                          onclick="openModal('assets/img/sertifikat/${cert.img}', '${cert.title}')">
                         <div class="relative h-56 overflow-hidden bg-white/5 p-4 flex items-center justify-center">
-                            <img src="assets/img/sertifikat/${cert.img}" alt="${cert.title}" 
+                            <img src="/assets/img/sertifikat/${cert.img}" alt="${cert.title}" 
                                  class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105 drop-shadow-md">
                             
                             <!-- Overlay icon on hover -->
@@ -666,4 +666,5 @@
 
 </body>
 </html>
+
 
