@@ -73,7 +73,8 @@ function initScripts() {
     }
 
     // 5. Active Nav Link Logic
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    let currentPath = window.location.pathname.split('/').pop();
+    if (!currentPath || currentPath === 'index.html' || currentPath === 'index') currentPath = '/';
     
     // Desktop Nav
     const desktopLinks = document.querySelectorAll('nav.hidden.md\\:flex a');

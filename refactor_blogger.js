@@ -118,7 +118,7 @@ const articleSection = `
                     <h4 class="text-primary font-semibold tracking-wider text-sm uppercase mb-2">Artikel Terkini</h4>
                     <h2 class="text-3xl md:text-4xl font-bold text-white">Tulisan & Blog</h2>
                 </div>
-                <a href="artikel.html" class="inline-flex items-center space-x-2 text-textSecondary hover:text-white transition-colors glass-panel px-4 py-2 rounded-lg border border-white/10">
+                <a href="artikel" class="inline-flex items-center space-x-2 text-textSecondary hover:text-white transition-colors glass-panel px-4 py-2 rounded-lg border border-white/10">
                     <span class="text-sm">Lihat Semua Artikel</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
@@ -144,7 +144,7 @@ const articleSection = `
             </div>
             
             <div class="mt-8 flex justify-center md:hidden">
-                <a href="artikel.html" class="flex items-center space-x-2 text-textSecondary hover:text-white transition-colors glass-panel px-4 py-2 rounded-lg border border-white/10">
+                <a href="artikel" class="flex items-center space-x-2 text-textSecondary hover:text-white transition-colors glass-panel px-4 py-2 rounded-lg border border-white/10">
                     <span class="text-sm">Lihat Semua Artikel</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
