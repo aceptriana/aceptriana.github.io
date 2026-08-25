@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     // Inject Web3 Network Canvas Background
     const canvasHtml = `<canvas id="web3-network" class="fixed inset-0 w-full h-full z-[-1] opacity-60"></canvas>`;
@@ -91,6 +90,16 @@ function initScripts() {
             link.className = 'text-white font-medium hover:text-primary transition-colors';
         } else {
             link.className = 'text-textSecondary hover:text-white transition-colors';
+        }
+    });
+
+    // Bottom Mobile Nav
+    const bottomMobileLinks = document.querySelectorAll('.nav-mobile-link');
+    bottomMobileLinks.forEach(link => {
+        const linkPath = link.getAttribute('data-path');
+        if (currentPath === linkPath || (linkPath !== '/' && currentPath.startsWith(linkPath))) {
+            link.classList.remove('text-textSecondary');
+            link.classList.add('text-primary');
         }
     });
 
@@ -222,7 +231,7 @@ async function initCryptoTicker() {
                     const logoUrl = logos[symbol] || '';
                     
                     tickerHtml += `
-                        <div class="flex items-center space-x-2 mx-6 text-xs font-mono font-medium">
+                        <div class="flex items-center space-x-2 mr-16 text-xs font-mono font-medium">
                             <img src="${logoUrl}" alt="${symbol}" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
                             <span class="text-white">${symbol}</span>
                             <span class="text-textSecondary">${price}</span>
