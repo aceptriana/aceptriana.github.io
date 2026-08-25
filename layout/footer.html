@@ -78,8 +78,22 @@
                     </div>
                 </div>
             </div>
+            <style>
+                .marquee-container {
+                    display: flex;
+                    width: max-content;
+                    animation: crypto-marquee 30s linear infinite;
+                }
+                .marquee-container:hover {
+                    animation-play-state: paused;
+                }
+                @keyframes crypto-marquee {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+            </style>
             <div class="border-t border-white/5 py-3 overflow-hidden w-full max-w-full">
-                <div class="flex whitespace-nowrap animate-[marquee_20s_linear_infinite] hover:[animation-play-state:paused]" id="crypto-ticker">
+                <div class="marquee-container" id="crypto-ticker">
                     <span class="text-xs text-textSecondary mx-4">Sedang memuat data Crypto...</span>
                 </div>
             </div>

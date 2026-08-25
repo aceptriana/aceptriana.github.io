@@ -197,6 +197,17 @@ async function initCryptoTicker() {
         const response = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=["BTCUSDT","ETHUSDT","SOLUSDT","BNBUSDT","XRPUSDT","ADAUSDT","DOGEUSDT"]');
         const data = await response.json();
         
+        // Logo mapping
+        const logos = {
+            'BTC': 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg?v=025',
+            'ETH': 'https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=025',
+            'SOL': 'https://cryptologos.cc/logos/solana-sol-logo.svg?v=025',
+            'BNB': 'https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=025',
+            'XRP': 'https://cryptologos.cc/logos/xrp-xrp-logo.svg?v=025',
+            'ADA': 'https://cryptologos.cc/logos/cardano-ada-logo.svg?v=025',
+            'DOGE': 'https://cryptologos.cc/logos/dogecoin-doge-logo.svg?v=025'
+        };
+
         if (data && Array.isArray(data)) {
             let tickerHtml = '';
             // Duplicate the items a few times for a smooth infinite marquee loop
@@ -208,9 +219,11 @@ async function initCryptoTicker() {
                     const isUp = change >= 0;
                     const colorClass = isUp ? 'text-green-400' : 'text-red-400';
                     const icon = isUp ? '▲' : '▼';
+                    const logoUrl = logos[symbol] || '';
                     
                     tickerHtml += `
                         <div class="flex items-center space-x-2 mx-6 text-xs font-mono font-medium">
+                            <img src="${logoUrl}" alt="${symbol}" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
                             <span class="text-white">${symbol}</span>
                             <span class="text-textSecondary">${price}</span>
                             <span class="${colorClass}">${icon} ${Math.abs(change).toFixed(2)}%</span>
