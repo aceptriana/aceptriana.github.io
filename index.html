@@ -449,34 +449,51 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(() => {
-                const command = "whoami --skills";
-                const output = "[+] System Administrator (RHCSA)\n[+] Full-Stack Developer\n[+] Web3 & DApps Enthusiast\n[+] Status: Ready for new projects!";
-                let i = 0;
+            setTimeout(async () => {
                 const twElement = document.getElementById('typewriter');
                 const outElement = document.getElementById('terminal-output');
-                if (twElement) {
-                    setTimeout(() => {
-                        const interval = setInterval(() => {
-                            twElement.textContent += command.charAt(i);
-                            i++;
-                            if (i >= command.length) {
-                                clearInterval(interval);
-                                setTimeout(() => {
-                                    outElement.textContent = output;
-                                    outElement.classList.remove('hidden');
-                                    const actions = document.getElementById('terminal-actions');
-                                    if(actions) {
-                                        actions.classList.remove('hidden');
-                                        setTimeout(() => {
-                                            actions.classList.remove('opacity-0');
-                                        }, 50);
-                                    }
-                                }, 400);
-                            }
-                        }, 100);
-                    }, 1000);
+                const actions = document.getElementById('terminal-actions');
+                
+                if (!twElement) return;
+
+                const command = "sys-scan --target me";
+                let ip = "192.168.1.xxx";
+                let loc = "Unknown Location";
+                
+                // Fetch IP Data
+                try {
+                    const res = await fetch('https://ipapi.co/json/');
+                    if (res.ok) {
+                        const data = await res.json();
+                        ip = data.ip || ip;
+                        loc = `${data.city || 'Unknown'}, ${data.country || 'Unknown'}`;
+                    }
+                } catch (e) {
+                    console.log("IP scan blocked or failed, using fallback.");
                 }
+
+                const output = `[+] Scanning connection...\n[+] IP Address: ${ip}\n[+] Location: ${loc}\n[+] Access Granted.`;
+                
+                let i = 0;
+                setTimeout(() => {
+                    const interval = setInterval(() => {
+                        twElement.textContent += command.charAt(i);
+                        i++;
+                        if (i >= command.length) {
+                            clearInterval(interval);
+                            setTimeout(() => {
+                                outElement.textContent = output;
+                                outElement.classList.remove('hidden');
+                                if(actions) {
+                                    actions.classList.remove('hidden');
+                                    setTimeout(() => {
+                                        actions.classList.remove('opacity-0');
+                                    }, 50);
+                                }
+                            }, 400);
+                        }
+                    }, 100);
+                }, 1000);
             }, 500); // slight delay to ensure terminal exists
         });
     </script>
