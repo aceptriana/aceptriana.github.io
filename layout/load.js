@@ -1,12 +1,9 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Inject Background Blobs
-    const blobs = `
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    `;
-    document.body.insertAdjacentHTML('afterbegin', blobs);
+    // Inject Web3 Network Canvas Background
+    const canvasHtml = `<canvas id="web3-network" class="fixed inset-0 w-full h-full z-[-1] opacity-60"></canvas>`;
+    document.body.insertAdjacentHTML('afterbegin', canvasHtml);
+    initWeb3Network();
 
     Promise.all([
         fetch('/layout/header.html').then(res => res.text()),
@@ -186,4 +183,153 @@ function initScripts() {
     const web3Script = document.createElement('script');
     web3Script.src = "/assets/js/web3-connect.js";
     document.body.appendChild(web3Script);
+
+    // 10. Init Crypto Ticker
+    initCryptoTicker();
+}
+
+async function initCryptoTicker() {
+    const tickerEl = document.getElementById('crypto-ticker');
+    if (!tickerEl) return;
+    
+    try {
+        // Fetch top crypto pairs from Binance API
+        const response = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=["BTCUSDT","ETHUSDT","SOLUSDT","BNBUSDT","XRPUSDT","ADAUSDT","DOGEUSDT"]');
+        const data = await response.json();
+        
+        if (data && Array.isArray(data)) {
+            let tickerHtml = '';
+            // Duplicate the items a few times for a smooth infinite marquee loop
+            for (let i = 0; i < 3; i++) {
+                data.forEach(coin => {
+                    const symbol = coin.symbol.replace('USDT', '');
+                    const price = parseFloat(coin.lastPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                    const change = parseFloat(coin.priceChangePercent);
+                    const isUp = change >= 0;
+                    const colorClass = isUp ? 'text-green-400' : 'text-red-400';
+                    const icon = isUp ? '▲' : '▼';
+                    
+                    tickerHtml += `
+                        <div class="flex items-center space-x-2 mx-6 text-xs font-mono font-medium">
+                            <span class="text-white">${symbol}</span>
+                            <span class="text-textSecondary">${price}</span>
+                            <span class="${colorClass}">${icon} ${Math.abs(change).toFixed(2)}%</span>
+                        </div>
+                    `;
+                });
+            }
+            tickerEl.innerHTML = tickerHtml;
+        }
+    } catch (error) {
+        console.error('Failed to load crypto ticker', error);
+        tickerEl.innerHTML = '<span class="text-xs text-textSecondary mx-4">Ticker unavailable</span>';
+    }
+}
+
+function initWeb3Network() {
+    const canvas = document.getElementById('web3-network');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    let width, height;
+    let particles = [];
+    
+    // Mouse properties
+    let mouse = { x: null, y: null, radius: 150 };
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+    });
+    
+    window.addEventListener('mouseout', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initParticles();
+    }
+    
+    window.addEventListener('resize', resize);
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.8;
+            this.vy = (Math.random() - 0.5) * 0.8;
+            this.radius = Math.random() * 2 + 1;
+            this.baseColor = '#A78BFA';
+        }
+        
+        update() {
+            if (this.x > width || this.x < 0) this.vx = -this.vx;
+            if (this.y > height || this.y < 0) this.vy = -this.vy;
+            
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            // Mouse interaction
+            if (mouse.x != null && mouse.y != null) {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < mouse.radius) {
+                    // Slight push away from mouse
+                    const force = (mouse.radius - distance) / mouse.radius;
+                    this.x -= (dx / distance) * force * 1.5;
+                    this.y -= (dy / distance) * force * 1.5;
+                }
+            }
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.baseColor;
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        let numParticles = (width * height) / 15000;
+        if (numParticles > 100) numParticles = 100; // cap max particles
+        for (let i = 0; i < numParticles; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            
+            for (let j = i; j < particles.length; j++) {
+                let dx = particles[i].x - particles[j].x;
+                let dy = particles[i].y - particles[j].y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 120) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(167, 139, 250, ${1 - distance/120})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    resize();
+    animate();
 }
