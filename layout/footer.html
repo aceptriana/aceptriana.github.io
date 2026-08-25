@@ -18,23 +18,23 @@
                     <h4 class="text-white font-semibold mb-4">Navigasi</h4>
                     <ul class="space-y-2 text-sm">
                         <li><a href="/" class="text-textSecondary hover:text-primary transition-colors">Beranda</a></li>
-                        <li><a href="tentang" class="text-textSecondary hover:text-primary transition-colors">Tentang Saya</a></li>
-                        <li><a href="layanan" class="text-textSecondary hover:text-primary transition-colors">Layanan</a></li>
-                        <li><a href="proyek" class="text-textSecondary hover:text-primary transition-colors">Proyek</a></li>
-                        <li><a href="artikel" class="text-textSecondary hover:text-primary transition-colors">Artikel</a></li>
-                        <li><a href="sertifikat" class="text-textSecondary hover:text-primary transition-colors">Sertifikasi</a></li>
-                        <li><a href="kontak" class="text-textSecondary hover:text-primary transition-colors">Kontak</a></li>
+                        <li><a href="/tentang" class="text-textSecondary hover:text-primary transition-colors">Tentang Saya</a></li>
+                        <li><a href="/layanan" class="text-textSecondary hover:text-primary transition-colors">Layanan</a></li>
+                        <li><a href="/proyek" class="text-textSecondary hover:text-primary transition-colors">Proyek</a></li>
+                        <li><a href="/artikel" class="text-textSecondary hover:text-primary transition-colors">Artikel</a></li>
+                        <li><a href="/sertifikat" class="text-textSecondary hover:text-primary transition-colors">Sertifikasi</a></li>
+                        <li><a href="/kontak" class="text-textSecondary hover:text-primary transition-colors">Kontak</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-white font-semibold mb-4">Layanan</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="layanan-system-administration" class="text-textSecondary hover:text-primary transition-colors">System Administration</a></li>
-                        <li><a href="layanan-web-development" class="text-textSecondary hover:text-primary transition-colors">Web Development</a></li>
-                        <li><a href="layanan-web3-development" class="text-textSecondary hover:text-primary transition-colors">Web3 Development</a></li>
-                        <li><a href="layanan-devops-cloud" class="text-textSecondary hover:text-primary transition-colors">DevOps & Cloud</a></li>
-                        <li><a href="layanan-cybersecurity" class="text-textSecondary hover:text-primary transition-colors">Cybersecurity</a></li>
-                        <li><a href="layanan-konsultasi-it" class="text-textSecondary hover:text-primary transition-colors">Konsultasi IT</a></li>
+                        <li><a href="/services/system-administration" class="text-textSecondary hover:text-primary transition-colors">System Administration</a></li>
+                        <li><a href="/services/web-development" class="text-textSecondary hover:text-primary transition-colors">Web Development</a></li>
+                        <li><a href="/services/web3-development" class="text-textSecondary hover:text-primary transition-colors">Web3 Development</a></li>
+                        <li><a href="/services/devops-cloud" class="text-textSecondary hover:text-primary transition-colors">DevOps & Cloud</a></li>
+                        <li><a href="/services/cybersecurity" class="text-textSecondary hover:text-primary transition-colors">Cybersecurity</a></li>
+                        <li><a href="/services/konsultasi-it" class="text-textSecondary hover:text-primary transition-colors">Konsultasi IT</a></li>
                     </ul>
                 </div>
                 <div>
@@ -89,18 +89,20 @@
         // Mobile Menu Toggle Logic
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenu.classList.toggle('flex');
-        });
-        // Close mobile menu on link click
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                mobileMenu.classList.remove('flex');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
             });
-        });
+            // Close mobile menu on link click
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                });
+            });
+        }
         // Header scroll effect
         const header = document.getElementById('header');
         window.addEventListener('scroll', () => {

@@ -73,13 +73,14 @@ function initScripts() {
     }
 
     // 5. Active Nav Link Logic
-    let currentPath = window.location.pathname.split('/').pop();
-    if (!currentPath || currentPath === 'index.html' || currentPath === 'index') currentPath = '/';
+    let currentPath = window.location.pathname;
+    if (currentPath.endsWith('.html')) currentPath = currentPath.replace('.html', '');
+    if (currentPath === '/index' || currentPath === '') currentPath = '/';
     
     // Desktop Nav
     const desktopLinks = document.querySelectorAll('nav.hidden.md\\:flex a');
     desktopLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+        if (link.getAttribute('href') === currentPath || (currentPath.startsWith('/projects/') && link.getAttribute('href') === '/proyek') || (currentPath.startsWith('/services/') && link.getAttribute('href') === '/layanan') || (currentPath.startsWith('/articles/') && link.getAttribute('href') === '/artikel')) {
             link.className = 'text-white font-medium hover:text-primary transition-colors pb-1 border-b-2 border-primary';
         } else {
             link.className = 'text-textSecondary hover:text-white transition-colors';
@@ -89,7 +90,7 @@ function initScripts() {
     // Mobile Nav
     const mobileLinksList = document.querySelectorAll('#mobile-menu a:not([href="#contact"])');
     mobileLinksList.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+        if (link.getAttribute('href') === currentPath || (currentPath.startsWith('/projects/') && link.getAttribute('href') === '/proyek') || (currentPath.startsWith('/services/') && link.getAttribute('href') === '/layanan') || (currentPath.startsWith('/articles/') && link.getAttribute('href') === '/artikel')) {
             link.className = 'text-white font-medium hover:text-primary transition-colors';
         } else {
             link.className = 'text-textSecondary hover:text-white transition-colors';
